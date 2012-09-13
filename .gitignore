@@ -1,5 +1,4 @@
 log/*.log
-log/*.log.*
 *.rbc
 tmp
 config/database.yml
