@@ -2,6 +2,7 @@
   <% f.inputs do %>
     <% f.inputs :name => "General", :class => 'separator' do %>
       <%= f.input :hostname %>
+      <%= f.input :comment, :required => false %>
       <%= f.input :enabled, :required => false, :label => 'Backups enabled?' %>
       <%= f.input :remove_only, :required => false, :label => 'Remove this server when all backups are expired' %>
       <%= f.input :connect_to, :required => false, :label => 'Ssh address', :hint => 'If different from hostname' %>

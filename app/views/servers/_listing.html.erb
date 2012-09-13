@@ -17,7 +17,11 @@
   <tbody>
 <% @servers.each do |server| %>
   <tr>
-    <td><%=link_to h(server.hostname), server %></td>
+    <td><%=link_to h(server.hostname), server %>
+      <% if server.comment && !server.comment.empty? %>
+        <img src="/images/stock_notes.png" width="14" height="14" title="<%=h server.comment%>">
+      <% end %>
+    </td>
     <td><%=link_to h(server.backup_server.hostname), server.backup_server %></td>
     <td><%=number_to_human_size server.usage  || 'NaN' %></td>
     <td><%=h server.last_backup || "None" %></td>

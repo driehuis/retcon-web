@@ -48,6 +48,21 @@
 </tbody>
 </table>
 
+<% if !@server.comment.empty? %>
+<table class="index sortable">
+<thead>
+  <tr>
+  <td>Comment</td>
+  </tr>
+</thead>
+<tbody>
+<tr>
+  <td><%=h @server.comment %></td>
+</tr>
+</tbody>
+</table>
+<% end %>
+
 <% if !@server.last_backup %>
   <b>Backup never performed!</b>
 <% elsif @server.backup_running? %>
