@@ -271,6 +271,10 @@ table.index td, table.overview td {
   padding: 8px 0;
   border-bottom: 1px solid #efefef;
 }
+table.index td>img {
+  vertical-align: bottom;
+  padding: 0 0;
+}
 table.overview td {
   border: none;
 }

@@ -19,7 +19,7 @@
   <tr>
     <td><%=link_to h(server.hostname), server %>
       <% if server.comment && !server.comment.empty? %>
-        <img src="/images/stock_notes.png" width="14" height="14" title="<%=h server.comment%>">
+        <img src="/images/stock_notes.png" title="<%=h server.comment%>">
       <% end %>
     </td>
     <td><%=link_to h(server.backup_server.hostname), server.backup_server %></td>
