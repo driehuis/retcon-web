@@ -10,7 +10,7 @@ class Profile < ActiveRecord::Base
 
   named_scope :public, :conditions => { :exclusive => false }
   named_scope :public_plus, lambda { |*profilename|
-    {:conditions => "exclusive = false or name = '#{profilename}'" }
+    {:conditions => ["exclusive = ? or name = ?", false, profilename] }
   }
 
   accepts_nested_attributes_for :includes, :allow_destroy => true
