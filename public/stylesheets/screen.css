@@ -268,12 +268,13 @@ table.index td, table.overview td {
   vertical-align: top;
   color: #666;
   font-size: 12px;
-  padding: 8px 0;
+  padding-left: 4px;
+  line-height: 150%;
   border-bottom: 1px solid #efefef;
 }
 table.index td>img {
   vertical-align: bottom;
-  padding: 0 0;
+  padding: 0px 1px 1px 0px;
 }
 table.overview td {
   border: none;
@@ -343,7 +344,8 @@ table.sortable {
 table.sortable thead tr th, table.sortable tfoot tr th {
   background-color: #d3dbff;
   border: 1px solid #FFF;
-  padding: 4px;
+  padding-left: 4px;
+  line-height: 150%;
 }
 table.sortable thead tr .header {
   background-image: url(/images/bg.gif);
@@ -353,7 +355,6 @@ table.sortable thead tr .header {
 }
 table.sortable tbody td {
   color: #3D3D3D;
-  padding: 4px;
   background-color: #FFF;
   vertical-align: top;
 }
