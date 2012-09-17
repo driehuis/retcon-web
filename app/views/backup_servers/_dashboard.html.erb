@@ -15,7 +15,7 @@
       <td><%=  backup_server.servers.count %></td>
       <td><%=  backup_server.running_backups.count %></td>
       <td><%=  backup_server.queued_backups.count %></td>
-      <td><%=h backup_server.disk_free %></td>
+      <td><%=display_disk_free backup_server.disk_free %></td>
     </tr>
   <% end %>
   <tr>
