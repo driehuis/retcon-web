@@ -13,8 +13,16 @@ class BackupServer < ActiveRecord::Base
       servers.count
   end
 
+  def running_backup_count
+      running_backups.count
+  end
+
+  def queued_backup_count
+      queued_backups.count
+  end
+
   def to_xml(options={})
-    options.merge!(:methods => :server_count)
+    options.merge!(:methods => [ :server_count, :running_backup_count, :queued_backup_count ])
     super(options)
   end
 
