@@ -247,7 +247,12 @@ class BackupJob < ActiveRecord::Base
   end
   
   def after_backupserver_diskspace(command)
-    self.backup_server.disk_free = command.output
+    @string = command.output
+    @free_used = string.split("\n")
+    self.backup_server.disk_free = @free_used[0].to_i
+    self.backup_server.disk_used = @free_used[1].to_i
+    self.backup_server.disk_size = self.backup_server.disk_free + self.backup_server.disk_size
+
     self.backup_server.save
     finish
   end
