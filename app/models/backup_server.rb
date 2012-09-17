@@ -9,6 +9,15 @@ class BackupServer < ActiveRecord::Base
 
   attr_accessor :in_subnet
 
+  def server_count
+      servers.count
+  end
+
+  def to_xml(options={})
+    options.merge!(:methods => :server_count)
+    super(options)
+  end
+
   def self.user_missing
     self.all.select { | b | b.user.nil? }
   end
