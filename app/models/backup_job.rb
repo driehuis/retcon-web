@@ -236,7 +236,7 @@ class BackupJob < ActiveRecord::Base
   def after_diskusage(command)
     self.server.usage = command.output.to_i
     self.server.save
-    run_command("/sbin/zfs list -H #{self.backup_server.zpool} | awk '{print $3}'", "backupserver_diskspace")
+    run_command("/sbin/zfs get -Hp available,used #{self.backup_server.zpool} | awk '{print $3}'", "backupserver_diskspace")
   end
   
   def after_get_snapshots(command)
