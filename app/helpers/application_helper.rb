@@ -10,8 +10,8 @@ module ApplicationHelper
   end
 
   def display_disk_free(free, used, size)
-    @giga = 1024 * 1024 * 1024;
-    "%.0fG (%.0f%% of %.0fG)" % [ free.to_f / @giga, 100.0 * (free.to_f / size.to_f), size.to_f / @giga ]
+    @tera = 1024 * 1024 * 1024 * 1024;
+    "%.2fT (%.0f%% of %.2fT)" % [ free.to_f / @tera, 100.0 * (free.to_f / size.to_f), size.to_f / @tera ]
   end
 
   def build_action_list
