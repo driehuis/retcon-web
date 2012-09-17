@@ -9,6 +9,15 @@ module ApplicationHelper
     item.online? ? "<span class='online'>Online</span>" : "<span class='offline'>Offline</span>"
   end
   
+  def display_disk_free(string)
+    @free_used = string.split("\n")
+    @giga = 1024 * 1024 * 1024;
+    @free = @free_used[0].to_f
+    @used = @free_used[1].to_f
+    @size = @free + @used
+    "%.0fG (%.0f%% of %.0fG)" % [ @free / @giga, 100.0 * (@free / @size), @size / @giga ]
+  end
+  
   def build_action_list
     @actions ||= []
     if @actions.size > 0
