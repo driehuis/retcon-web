@@ -13,7 +13,7 @@
   <% @failed.each do |job| %>
     <tr>
       <td><%=link_to h(job.id), job %></td>
-      <td><%=link_to h(job.server), job.server %></td>
+      <td><%= render :partial => 'servers/server_link', :locals=> { :server => job.server } %></td>
       <td><%=link_to h(job.backup_server), job.backup_server %></td>
       <td><%=h job.updated_at %></td>
       <td><%=h job.status %></td>
