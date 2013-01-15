@@ -79,4 +79,17 @@ class BackupJobsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def mark_failed
+    # Mark the backup job as failed. This does not terminate the running command.
+    @backup_job = BackupJob.accessible_by(current_ability).find(params[:id])
+    @backup_job.finished = true
+    @backup_job.status='FAIL'
+    @backup_job.save
+
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.xml  { head :ok }
+    end
+  end
 end

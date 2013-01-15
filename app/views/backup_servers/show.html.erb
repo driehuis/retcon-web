@@ -36,7 +36,7 @@
     <th>Server</th>
     <th>Status</th>
     <th>Started</th>
-    <th>Duration (from the moment of queueing)</th>
+    <th>Duration (since queueing)</th>
   </tr>
   </thead>
   <tbody>
@@ -48,7 +48,10 @@
     <td><%=(job.started || job.updated_at) %></td>
     <td><%=display_backup_duration(job)%></td>
     <% if job.status == 'running' %>
-      <td><%= link_to 'Redo last command', redo_path(job), :confirm => 'This will remove the last command from the database so it will be performed again. Only use if you know for sure it is finished on the backup server!' %></td>
+      <td>
+        <!-- <%= link_to 'Redo last', redo_path(job), :confirm => 'This will remove the last command from the database so it will be performed again. Only use if you know for sure it is finished on the backup server!' %> -->
+        <%= link_to 'Mark as failed', mark_failed_path(job), :confirm => 'This will mark the entire backup job as failed and remove scheduled commands. It will not kill the running command. Only use this if the backup server somehow lost track of the running command!' %>
+      </td>
     <% end %>
   </tr>
   </tbody>

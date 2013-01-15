@@ -3,7 +3,7 @@
   <table class="index sortable">
     <thead>
     <tr>
-      <th>&nbsp;</th>
+      <th>Job</th>
       <th>Server</th>
       <th>Backup Server</th>
       <th>Started</th>
@@ -19,7 +19,10 @@
       <td><%=link_to h(job.backup_server), job.backup_server %></td>
       <td><%=(job.started || job.updated_at) %></td>
       <td><%=display_backup_duration(job) %></td>
-      <td><%= link_to 'Redo last command', redo_path(job), :confirm => 'This will remove the last command from the database so it will be performed again. Only use if you know for sure it is finished on the backup server!' %></td>
+      <td>
+        <!-- <%= link_to 'Redo last', redo_path(job), :confirm => 'This will remove the last command from the database so it will be performed again. Only use if you know for sure it is finished on the backup server!' %> -->
+        <%= link_to 'Mark as failed', mark_failed_path(job), :confirm => 'This will mark the entire backup job as failed and remove scheduled commands. It will not kill the running command. Only use this if the backup server somehow lost track of the running command!' %>
+      </td>
     </tr>
   <% end %>
   </tbody>

@@ -4,6 +4,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'backup_jobs/queue.xml', :controller => 'backup_jobs', :action => 'queue'
 
   map.redo '/backup_jobs/:id/redo_last', :controller => 'backup_jobs', :action => 'redo_last'
+  map.mark_failed '/backup_jobs/:id/mark_failed', :controller => 'backup_jobs', :action => 'mark_failed'
 
   map.resources :backup_jobs
 
