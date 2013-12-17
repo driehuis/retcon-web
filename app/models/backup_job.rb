@@ -47,14 +47,14 @@ class BackupJob < ActiveRecord::Base
     "/usr/bin/pfexec rsync --stats -aHRW --numeric-ids --timeout=3600 --delete-excluded --exclude=.zfs -e '#{ssh_command}' " +
     server.rsync_protects + " " + server.rsync_includes + " " + 
     server.rsync_split_excludes + " " + server.rsync_excludes +
-    " root@#{self.server.connect_address}:#{self.server.startdir} /#{fs}/"
+    " #{self.server.connect_address}:#{self.server.startdir} /#{fs}/"
   end
   
   def rsync_template
     "/usr/bin/pfexec rsync --stats -aHRW --numeric-ids --timeout=3600 --delete-excluded --exclude=.zfs -e '#{ssh_command}' " +
     server.rsync_protects + " " + server.rsync_includes + " " + 
     server.rsync_excludes +
-    " root@#{self.server.connect_address}:DIR /#{fs}/"
+    " #{self.server.connect_address}:DIR /#{fs}/"
   end
   
   def rsyncs
