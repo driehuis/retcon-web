@@ -43,7 +43,7 @@
 <% @backup_server.latest_jobs.select{|j| can? :read, j}.each do | job | %>
   <tr>
 	<td><%= link_to job.id, job %></td>
-    <td><%=link_to h(job.server.hostname), job.server %></td>
+    <td><%=link_to h(job.server ? job.server.hostname : "no server"), job.server %></td>
     <td><%=job.display_status %></td>
     <td><%=(job.started || job.updated_at) %></td>
     <td><%=display_backup_duration(job)%></td>
