@@ -2,10 +2,10 @@
   <% f.inputs do %>
     <% f.inputs :name => "General", :class => 'separator' do %>
       <%= f.input :hostname %>
-      <%= f.input :comment, :required => false %>
-      <%= f.input :enabled, :required => false, :label => 'Backups enabled?' %>
-      <%= f.input :remove_only, :required => false, :label => 'Remove this server when all backups are expired' %>
-      <%= f.input :connect_to, :required => false, :label => 'Ssh address', :hint => 'If different from hostname' %>
+      <%= f.input :comment, :required => false, :hint => 'Leave comment blank. Add a comment to document exceptions or work in progress. Include a ticket number is possible.' %>
+      <%= f.input :enabled, :required => false, :label => 'Backups enabled?', :hint => '&nbsp;&nbsp;Disabling backups makes Retcon completely ignore this server.<br>&nbsp;&nbsp;Only disable backups for short periods of planned work.' %>
+      <%= f.input :remove_only, :required => false, :label => 'Remove this server when all backups are expired', :hint => '&nbsp;&nbsp;Backups must be enabled for removal to work correctly.' %>
+      <%= f.input :connect_to, :required => false, :label => 'Ssh address', :hint => 'If different from hostname. Leave blank otherwise. Avoid using IP addresses is possible.' %>
       <%= f.input :ssh_port, :required => true, :hint => 'Probably port 22' %>
       <%= f.input :path, :required => true, :hint => 'Probably /', :label => 'Rsync start path' %>
     <% end %>
@@ -19,6 +19,10 @@
                                   :include_blank => (@server.backup_server.nil? ? true : false )%>
       <%= f.input :user, :hint => "Visible to this customer", :as => :select, :collection => Role.find_by_name('user').users, :include_blank => true %>
     <% end %>
+    <!-- FIXME: should clean up the GUI instead of documenting how it works :-) bert 20131217 -->
+    <p>
+    Note: Includes, Excludes and Splits can be configured in the Local Settings. Click "Show" in the top-right corner of this page, then click "Show them" under "Local settings" on the next page.
+    </p>
   <% end %>
   <button type='submit'>Save</button>
 <% end %>
