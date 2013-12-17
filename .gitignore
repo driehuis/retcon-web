@@ -1,7 +1,9 @@
 log/*.log
+log/*.log.*
 *.rbc
 tmp
 config/database.yml
+config/.secret
 db/*.sqlite3
 db/schema.rb
 config/nanite/*.yml
