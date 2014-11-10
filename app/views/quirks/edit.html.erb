@@ -1,0 +1,9 @@
+<% content_for :header do %>
+  Edit
+<% end %>
+<section>
+<h3>Edit quirk <%= @quirk.name %></h3>
+<%= render :partial => 'form' %>
+</section>
+<% add_action 'Show', @quirk %>
+<% add_action 'Add', new_quirk_path %>

@@ -1,0 +1,36 @@
+<% content_for :header do %>
+  Special quirks
+<% end %>
+<% content_for :search do %>
+  <% form_for @search, :html => {:id => 'search'} do |f| %>
+      <%= f.text_field :name_like, :autofocus => 'autofocus' %>
+  <% end %>
+<% end %>
+
+<section>
+<h3>Information</h3>
+<div>
+<p>
+This page configures quirks of a backup target.
+They do not affect Retcon itself. External validation tools can query
+Retcon for the presence of quirks for a given backup target,
+and Retcon users can see if quirks have been defined.
+</p>
+<p>
+For example: suppose you back up a database for a customer, and run an
+external validator to check that the backup is complete. Your customer
+has a test environment that you also backup, but you don't want the
+validator to complain about test data. You could add a special
+quirk called "ignore-database-broken" for this host.
+</p>
+</div>
+</section>
+
+<section>
+<h3>Special quirks overview</h3>
+<div id="listing">
+  <%= render :partial => 'listing' %>
+</div>
+</section>
+
+<% add_action 'Add', new_quirk_path if can?(:manage, Quirk) %>

@@ -1,0 +1,5 @@
+<p class="fields">
+  <%= f.select(:quirk_id, Quirk.all.collect {|p| [p.name,p.id]}) %>
+  <%= f.text_field :comment %>
+  <%= link_to_remove_fields "remove", f %>
+</p>

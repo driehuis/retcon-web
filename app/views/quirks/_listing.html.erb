@@ -1,0 +1,22 @@
+<table class="index sortable">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Used by</th>
+  </tr>
+  </thead>
+  <tbody>
+<% @quirks.each do |quirk| %>
+  <tr>
+    <td><%= link_to h(quirk.name), quirk %></td>
+    <td><%= quirk.servers.count %></td>
+    <td>
+      <% if can?(:manage, quirk) %>
+        <%= link_to 'Edit', edit_quirk_path(quirk) %> |
+        <%= link_to 'Destroy', quirk, :confirm => 'Are you sure?', :method => :delete %>
+      <% end %>
+    </td>
+  </tr>
+<% end %>
+  </tbody>
+</table>
