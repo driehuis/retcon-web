@@ -124,6 +124,22 @@
 <% end %>
 </section>
 
+<% if @server.quirk_details.count != 0 %>
+<section>
+<h3>Quirks</h3>
+<ul class="quirks_list">
+<% @server.quirk_details.each do | ad | %>
+  <li><%= link_to h(ad.quirk.name), ad.quirk %>
+  <%= h(ad.quirk.description) %>
+  <% if ad.comment %>
+  (<i><%= h(ad.comment) %></i>)
+  <%end %>
+  </li>
+<% end %>
+</ul>
+</section>
+<% end %>
+
 <% if @server.problems.size > 0 %>
   <section>
 

@@ -18,6 +18,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :user_sessions
   
   map.resources :profiles, :has_many => [:excludes, :includes, :splits]
+  map.resources :quirks
 
   map.resources :backup_servers
 

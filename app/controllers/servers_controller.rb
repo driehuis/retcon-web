@@ -21,7 +21,7 @@ class ServersController < ApplicationController
   # GET /servers/1
   # GET /servers/1.xml
   def show
-    @server = Server.accessible_by(current_ability).find(params[:id])
+    @server = Server.accessible_by(current_ability).find(params[:id], :include => [:quirk_details => :quirk])
 
     respond_to do |format|
       format.html # show.html.erb

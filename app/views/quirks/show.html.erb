@@ -1,0 +1,23 @@
+<% content_for :header do %>
+  <%=h @quirk.name %>
+<% end %>
+<% add_action 'Add', new_quirk_path if can?(:manage, Quirk) %>
+<% add_action 'Edit', edit_quirk_path(@quirk) if can?(:manage, @quirk)%>
+
+<section>
+<h3>Special quirk</h3>
+
+<p>
+Name: <%=h @quirk.name %>
+<br>
+Description: <%=h @quirk.description %>
+</p>
+</section>
+<section id="quirkserverlist">
+<h3>Applies to</h3>
+  <% @quirk.servers.each do | server | %>
+      <li><%=h server %> <%=h server.quirk_details[0].comment %>
+    </li>
+  <% end %>
+</ul>
+</section>

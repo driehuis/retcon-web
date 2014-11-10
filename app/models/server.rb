@@ -14,9 +14,12 @@ class Server < ActiveRecord::Base
   has_many :profiles, :through => :profilizations, :include => [:includes, :excludes, :splits]
   has_many :problems, :dependent => :destroy
   has_many :backup_jobs, :dependent => :destroy
+  has_many :quirk_details, :dependent => :destroy
+  has_many :quirks, :through => :quirk_details
   belongs_to :backup_server
   belongs_to :user
   before_save :sanitize_inputs
+  accepts_nested_attributes_for :quirk_details, :allow_destroy => true
 
   def exclusive_profile
     if profile = profiles.select{|p| p.exclusive?}[0]
