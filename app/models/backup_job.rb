@@ -93,6 +93,7 @@ class BackupJob < ActiveRecord::Base
     return "OK" if [0,24].include?(num)
     return "FAIL" if [12,30,127].include?(num)
     return "FAIL" if Regexp.new(/Command not found/).match(output)
+    return "FAIL" if Regexp.new(/Input\/output error \(5\)/).match(output)
     if match = Regexp.new(/\((\d+) bytes received so far\)/).match(output)
       return "FAIL" if match[1].to_i == 0
     end
