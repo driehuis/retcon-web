@@ -5,7 +5,7 @@ class QuirksController < ApplicationController
   # GET /quirks.xml
   def index
     @search = Quirk.accessible_by(current_ability).public.search(params[:search])
-    @quirks = @search.find(:all, :order => 'name')
+    @quirks = @search.find(:all, :order => 'name', :include=>[:servers])
     if request.xhr?
       render :partial => 'listing'
     else
