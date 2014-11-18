@@ -15,9 +15,17 @@ Description: <%=h @quirk.description %>
 </section>
 <section id="quirkserverlist">
 <h3>Applies to</h3>
+<table class="index sortable">
+  <thead>
+    <tr><td>Server</td><td>Comment</td></tr>
+  </thead>
+  <tbody>
   <% @quirk.servers.each do | server | %>
-      <li><%=h server %> <%=h server.quirk_details[0].comment %>
-    </li>
+    <tr>
+      <td><%=h link_to server, server %></td>
+      <td><%=h server.quirk_details.select{|qd| qd.quirk_id == @quirk.id}.first.comment %></td>
+    </tr>
   <% end %>
-</ul>
+  </tbody>
+</table>
 </section>
