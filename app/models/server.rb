@@ -7,7 +7,7 @@ class Server < ActiveRecord::Base
   validates_inclusion_of :window_stop, :in => 0..23,
          :message => 'Should be a valid hour! Ranging from 0 to 23',
          :unless => Proc.new { |server| server.window_stop.blank?  }
-	validates_presence_of :comment, :unless => Proc.new { |s| s.enabled == true },
+	validates_presence_of :comment, :unless => Proc.new { |s| s.backup_server_id == nil || s.enabled == true },
 				 :message => 'You must enter a ticket number in the comment field when you disable a backup.'
 
   has_many :profilizations, :dependent => :destroy
