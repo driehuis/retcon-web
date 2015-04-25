@@ -9,7 +9,7 @@ describe BackupJob do
     p.splits << Factory.build(:split, :path => '/home')
     s.profiles << p
     j = Factory.build(:backup_job, :server => s)
-    j.main_rsync.should == "/usr/bin/pfexec rsync --stats -aHRW --numeric-ids --timeout=3600 --delete-excluded --exclude=.zfs -e 'ssh -c arcfour -p 22' --filter='protect /home' --include=/ --exclude=/home --exclude=/backup root@server1.example.com:/ /backup/server1.example.com/"
+    j.main_rsync.should == "/usr/bin/pfexec rsync --stats -aHRW --numeric-ids --timeout=3600 --delete-excluded --exclude=.zfs -e 'ssh -c arcfour -p 22' --filter='protect /home' --include=/ --exclude=/home --exclude=/backup server1.example.com:/ /backup/server1.example.com/"
   end
 
   it "should store a list of rsyncs" do
@@ -21,8 +21,8 @@ describe BackupJob do
     s.profiles << p
     j = Factory.build(:backup_job, :server => s)
     j.rsyncs.size.should == 62 # a-z,A-Z,0-9
-    j.rsyncs.first.should == "/usr/bin/pfexec rsync --stats -aHRW --numeric-ids --timeout=3600 --delete-excluded --exclude=.zfs -e 'ssh -c arcfour -p 22' --filter='protect /home' --include=/ --exclude=/backup root@server1.example.com://home/a* /backup/server1.example.com/"
-    j.rsyncs.last.should == "/usr/bin/pfexec rsync --stats -aHRW --numeric-ids --timeout=3600 --delete-excluded --exclude=.zfs -e 'ssh -c arcfour -p 22' --filter='protect /home' --include=/ --exclude=/backup root@server1.example.com://home/9* /backup/server1.example.com/"
+    j.rsyncs.first.should == "/usr/bin/pfexec rsync --stats -aHRW --numeric-ids --timeout=3600 --delete-excluded --exclude=.zfs -e 'ssh -c arcfour -p 22' --filter='protect /home' --include=/ --exclude=/backup server1.example.com://home/a* /backup/server1.example.com/"
+    j.rsyncs.last.should == "/usr/bin/pfexec rsync --stats -aHRW --numeric-ids --timeout=3600 --delete-excluded --exclude=.zfs -e 'ssh -c arcfour -p 22' --filter='protect /home' --include=/ --exclude=/backup server1.example.com://home/9* /backup/server1.example.com/"
   end
 
   it "should store more rsyncs if the depth is 2" do
@@ -34,8 +34,8 @@ describe BackupJob do
     s.profiles << p
     j = Factory.build(:backup_job, :server => s)
     j.rsyncs.size.should == 3844 # a-z,A-Z,0-9
-    j.rsyncs.first.should == "/usr/bin/pfexec rsync --stats -aHRW --numeric-ids --timeout=3600 --delete-excluded --exclude=.zfs -e 'ssh -c arcfour -p 22' --filter='protect /home' --include=/ --exclude=/backup root@server1.example.com://home/a*/a* /backup/server1.example.com/"
-    j.rsyncs.last.should == "/usr/bin/pfexec rsync --stats -aHRW --numeric-ids --timeout=3600 --delete-excluded --exclude=.zfs -e 'ssh -c arcfour -p 22' --filter='protect /home' --include=/ --exclude=/backup root@server1.example.com://home/9*/9* /backup/server1.example.com/"
+    j.rsyncs.first.should == "/usr/bin/pfexec rsync --stats -aHRW --numeric-ids --timeout=3600 --delete-excluded --exclude=.zfs -e 'ssh -c arcfour -p 22' --filter='protect /home' --include=/ --exclude=/backup server1.example.com://home/a*/a* /backup/server1.example.com/"
+    j.rsyncs.last.should == "/usr/bin/pfexec rsync --stats -aHRW --numeric-ids --timeout=3600 --delete-excluded --exclude=.zfs -e 'ssh -c arcfour -p 22' --filter='protect /home' --include=/ --exclude=/backup server1.example.com://home/9*/9* /backup/server1.example.com/"
   end
 
   it "should not add splits if there is a matching include" do
@@ -245,7 +245,7 @@ describe BackupJob do
   it "should update the disk usage and ask for the free space for the backup server" do
     job = Factory(:backup_job)
     command = Factory(:command, :exitstatus => 0, :output => '11')
-    job.should_receive(:run_command).with("/sbin/zfs list -H backup | awk '{print $3}'", "backupserver_diskspace")
+    job.should_receive(:run_command).with("/sbin/zfs get -Hp available,used backup | awk '{print $3}'", "backupserver_diskspace")
     job.after_diskusage(command)
     job.server.usage.should == 11
   end
@@ -292,9 +292,9 @@ describe BackupJob do
 
   it "should update the diskspace for the backup server" do
     job = Factory(:backup_job)
-    command = Factory(:command, :exitstatus => 0, :output => '630G')
+    command = Factory(:command, :exitstatus => 0, :output => '2133674676224')
     job.after_backupserver_diskspace(command)
-    job.backup_server.disk_free.should == '630G'
+    job.backup_server.disk_free.should == 2133674676224
     job.finished.should == true
   end
 

@@ -1,56 +1,74 @@
-Factory.define :server do |f|
-  f.sequence(:hostname) {|n| "server#{n}.example.com" }
-  f.enabled true
-  f.ssh_port 22
-  f.interval_hours 24
-  f.keep_snapshots 30
-  f.association :backup_server
-  f.path '/'
+FactoryGirl.define do
+  factory :server do
+    sequence(:hostname) {|n| "server#{n}.example.com" }
+    enabled true
+    ssh_port 22
+    interval_hours 24
+    keep_snapshots 30
+    association :backup_server
+    path '/'
+  end
 end
 
-Factory.define :backup_server do | f |
-  f.sequence(:hostname) {|n| "backup#{n}.example.com" }
-  f.zpool "backup"
-  f.max_backups 10
-  f.association :user
+FactoryGirl.define do
+  factory :backup_server do
+    sequence(:hostname) {|n| "backup#{n}.example.com" }
+    zpool "backup"
+    max_backups 10
+    association :user
+  end
 end
 
-Factory.define :profile do | f |
-  f.sequence(:name) {|n| "profile#{n}" }
+FactoryGirl.define do
+  factory :profile do
+    sequence(:name) {|n| "profile#{n}" }
+  end
 end
 
-Factory.define :user do | f |
-  f.sequence(:username) {|n| "user#{n}" }
-  f.password 'testing'
-  f.password_confirmation 'testing'
+FactoryGirl.define do
+  factory :user do
+    sequence(:username) {|n| "user#{n}" }
+    password 'testing'
+    password_confirmation 'testing'
+  end
 end
 
-Factory.define :exclude do | f |
-  f.sequence(:path) {|n| "/exclude/#{n}" }
-  f.association :profile
+FactoryGirl.define do
+  factory :exclude do
+    sequence(:path) {|n| "/exclude/#{n}" }
+    association :profile
+  end
 end
 
-Factory.define :include do | f |
-  f.sequence(:path) {|n| "/include/#{n}" }
-  f.association :profile
+FactoryGirl.define do
+  factory :include do
+    sequence(:path) {|n| "/include/#{n}" }
+    association :profile
+  end
 end
 
-Factory.define :split do | f |
-  f.path "/home/"
-  f.depth 1
-  f.association :profile
+FactoryGirl.define do
+  factory :split do
+    path "/home/"
+    depth 1
+    association :profile
+  end
 end
 
-Factory.define :backup_job do | f |
-  f.association :backup_server
-  f.association :server
-  f.status 'running'
+FactoryGirl.define do
+  factory :backup_job do
+    association :backup_server
+    association :server
+    status 'running'
+  end
 end
 
-Factory.define :command do | f |
-  f.association :backup_job
-  f.command 'ls'
-  f.label 'rsync 1'
-  f.exitstatus 0
-  f.output 'w00t'
+FactoryGirl.define do
+  factory :command do
+    association :backup_job
+    command 'ls'
+    label 'rsync 1'
+    exitstatus 0
+    output 'w00t'
+  end
 end
