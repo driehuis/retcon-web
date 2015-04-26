@@ -29,7 +29,8 @@ class BackupJobStats < ActiveRecord::Base
         bump :n_cre, $1
       end
       # Number of regular files transferred: 33
-      if /Number of regular files transferred: (\d+)/.match(line)
+      # Number of files transferred: 72
+      if /Number of (?:regular )?files transferred: (\d+)/.match(line)
         bump :n_xfr, $1
       end
       # Total file size: 2,820,109,491 bytes
