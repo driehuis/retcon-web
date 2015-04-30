@@ -110,36 +110,6 @@
 </section>
 <% end %>
 
-<section>
-<h3>Applied profiles</h3>
-<ul class="profile_list">
-<% @server.profiles.public.each do | profile | %>
-  <li><%= link_to h(profile.name), profile %></li>
-<% end %>
-</ul>
-
-<% if @server.backup_server %>
-  <% @job = BackupJob.new(:server => @server, :backup_server => @server.backup_server ) %>
-  <p>This resolves to the following rsync command:<br/> <%= @job.main_rsync %></p>
-<% end %>
-</section>
-
-<% if @server.quirk_details.count != 0 %>
-<section>
-<h3>Quirks</h3>
-<ul class="quirks_list">
-<% @server.quirk_details.each do | ad | %>
-  <li><%= link_to h(ad.quirk.name), ad.quirk %>
-  <%= h(ad.quirk.description) %>
-  <% if ad.comment %>
-  (<i><%= h(ad.comment) %></i>)
-  <%end %>
-  </li>
-<% end %>
-</ul>
-</section>
-<% end %>
-
 <% if @server.problems.size > 0 %>
   <section>
 
@@ -200,17 +170,57 @@
 </table>
 </section>
 <% end %>
+
+<section>
+<h3>Applied profiles</h3>
+<ul class="profile_list">
+<% @server.profiles.public.each do | profile | %>
+  <li><%= link_to h(profile.name), profile %></li>
+<% end %>
+</ul>
+
+<% if @server.backup_server %>
+  <% @job = BackupJob.new(:server => @server, :backup_server => @server.backup_server ) %>
+  <p>This resolves to the following rsync command:<br/> <%= @job.main_rsync %></p>
+<% end %>
+</section>
+
+<% if @server.quirk_details.count != 0 %>
+<section>
+<h3>Quirks</h3>
+<ul class="quirks_list">
+<% @server.quirk_details.each do | ad | %>
+  <li><%= link_to h(ad.quirk.name), ad.quirk %>
+  <%= h(ad.quirk.description) %>
+  <% if ad.comment %>
+  (<i><%= h(ad.comment) %></i>)
+  <%end %>
+  </li>
+<% end %>
+</ul>
+</section>
+<% end %>
+
 <section>
 <h3>Local settings</h3>
 <p>
-These are the local settings of the <b><%=h @server.hostname %></b> server.
-If some settings need to be done only for this server this is the right place.
+These are the local settings of the <b><%=h @server.hostname %></b> server,
+that do not applicable to other servers. Setting that are shared between
+servers are applied through profiles.
 </p>
-<p><%= link_to 'Show them', {:anchor => 'local_settings' }, :class => 'toggle_settings'%></p>
-</section>
-<span class="togglable" style="display: none" id="local_settings">
 <% @profile = @server.exclusive_profile %>
-<%= render :partial => 'profiles/excludes' %>
-<%= render :partial => 'profiles/includes' %>
-<%= render :partial => 'profiles/splits' %>
-</span>
+<%= render :partial => 'profiles/excludes', :locals => {:read_only => true} %>
+<%= render :partial => 'profiles/includes', :locals => {:read_only => true} %>
+<%= render :partial => 'profiles/splits', :locals => {:read_only => true} %>
+</section>
+
+<% content_for :extra_head_makeup do %>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.js"></script>
+<% end %>
+<section>
+  <h3>Rsync statistics</h3>
+  <%= render :partial => 'servers/stats_linechart', :locals => {:server_id => @server.id, :subset => 'size'} %>
+  <%= render :partial => 'servers/stats_linechart', :locals => {:server_id => @server.id, :subset => 'count'} %>
+</section>

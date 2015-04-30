@@ -2,19 +2,22 @@
 <h3>Excludes</h3>
 <p>The following directories will be excluded from the backups. Wildcards are allowed.</p>
 <ul>
+  <% if @profile.excludes.size == 0 %>
+    <li><i>None</i></li>
+  <% end %>
   <% @profile.excludes.each do | exclude | %>
-    <li><%=h exclude.path %> 
+    <li><%=h exclude.path %>
       <% if can?(:manage, exclude) %>
         (<%= link_to 'Edit', edit_profile_exclude_path(@profile, exclude) %> | <%= link_to 'Destroy', [@profile, exclude], :confirm => 'Are you sure?', :method => :delete %>)
       <% end %>
     </li>
   <% end %>
 </ul>
-</section>
-<% if can?(:manage, Exclude) %>
+<% if !read_only && can?(:manage, Exclude) %>
   <section>
-  <h3>Add exclude</h3>
-  <% @exclude = @profile.excludes.build %>
-  <%= render :partial => 'excludes/form' %>
+    <h3>Add exclude</h3>
+    <% @exclude = @profile.excludes.build %>
+    <%= render :partial => 'excludes/form' %>
   </section>
 <% end %>
+</section>

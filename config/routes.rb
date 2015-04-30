@@ -23,6 +23,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :backup_servers
 
   map.resources :servers
+  map.connect '/stats/server/:subset/:id.:format', :controller => 'servers', :action => 'job_stats', :format => /json/, :subset => /\w+/
 
   # The priority is based upon order of creation: first created -> highest priority.
 

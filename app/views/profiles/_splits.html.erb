@@ -1,7 +1,9 @@
 <section id="splits">
-<h3>Splits</h3>
-<p>The following directories will be split in rsyncs for A-Z, a-z and 0-9. This increases performance for very large directories. Files and directories starting with other characters will not be backed up!</p>
+<p><b>Splits:</b> The following directories will be split in rsyncs for A-Z, a-z and 0-9. This increases performance for very large directories. Files and directories starting with other characters will not be backed up!</p>
 <ul>
+  <% if @profile.splits.size == 0 %>
+    <li><i>None</i></li>
+  <% end %>
   <% @profile.splits.each do | split | %>
     <li><%=h split.path %> (level:<%=h split.depth %>)
       <% if can?(:manage, split) %>
@@ -10,11 +12,11 @@
     </li>
   <% end %>
 </ul>
-</section>
-<% if can?(:manage, Split) %>
+<% if !read_only && can?(:manage, Split) %>
   <section>
-  <h3>Add split</h3>
-  <% @split = @profile.splits.build %>
-  <%= render :partial => 'splits/form' %>
+    <h3>Add split</h3>
+    <% @split = @profile.splits.build %>
+    <%= render :partial => 'splits/form' %>
   </section>
 <% end %>
+</section>

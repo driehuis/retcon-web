@@ -90,4 +90,35 @@ class ServersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  JOB_STAT_SIZE_ITEMS = [ :current_size, :xfr_size, :list_size, :net_recv, :net_sent ]
+  JOB_STAT_COUNT_ITEMS = [ :inodes, :n_reg, :n_dir, :n_lnk, :n_spc, :n_xfr ]
+  JOB_STAT_ITEMS = {
+    'size' => JOB_STAT_SIZE_ITEMS,
+    'count' => JOB_STAT_COUNT_ITEMS,
+  }
+    def job_stats
+      items = JOB_STAT_ITEMS[params[:subset]]
+      #raise "Unknown subset #{params[:subset]}" unless items
+      @server = Server.accessible_by(current_ability).find(params[:id], :include => [:backup_jobs => :backup_job_stats])
+      stats = @server.backup_jobs.order(:updated_at).map{|j| j.backup_job_stats}.select{|s| s}
+      out = Array.new
+      items.each do |i|
+        elm = Hash.new
+        elm["key"] = i.to_s
+        elm["values"] = Array.new
+        stats.sort { |a,b| a.created_at <=> b.created_at }.each do|s|
+          time = s.created_at.to_i * 1000
+          elm["values"] << [ time, s[i] ]
+        end
+        out << elm
+      end
+
+      respond_to do |format|
+        #format.html # show.html.erb
+        #format.xml  { render :xml => @server }
+        format.json  { render :json => out }
+      end
+    end
+
 end

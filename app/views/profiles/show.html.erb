@@ -12,6 +12,6 @@ These are the settings of the <b><%=h @profile.name %></b> profile. Using profil
 </p>
 </section>
 
-<%= render :partial => 'profiles/excludes' %>
-<%= render :partial => 'profiles/includes' %>
-<%= render :partial => 'profiles/splits' %>
+<%= render :partial => 'profiles/excludes', :locals => {:read_only => false} %>
+<%= render :partial => 'profiles/includes', :locals => {:read_only => false} %>
+<%= render :partial => 'profiles/splits', :locals => {:read_only => false} %>
