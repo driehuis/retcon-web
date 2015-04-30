@@ -313,11 +313,29 @@ describe BackupJob do
     server.keep_snapshots.should == 1
   end
 
-  it "should only remove a snapshot when there are no snapshots left and server is in removal_only" do
+  it "should only remove one snapshot at a time when the server is in remove_only" do
     server = Factory.create(:server, :hostname => 'serverx4', :snapshots => 'snap1,snap2', :keep_snapshots => 1, :remove_only => true)
     job = Factory.create(:backup_job, :server => server)
     job.should_receive(:run_command).with("/bin/pfexec /sbin/zfs destroy backup/serverx4@snap1", "remove_snapshot snap1")
     job.remove_old_snapshots
+    server.snapshots.should == 'snap2'
+  end
+
+  it "should just take stock of the last snapshot when the server is in remove_only and keep_snapshots is still one (first phase)" do
+    server = Factory.create(:server, :hostname => 'serverx4', :snapshots => 'snap2', :keep_snapshots => 1, :remove_only => true)
+    job = Factory.create(:backup_job, :server => server)
+    job.should_receive(:run_command).with("/sbin/zfs list -H -r -o name -t snapshot backup/serverx4 | /usr/gnu/bin/sed -e 's/.*@//'", "get_snapshots")
+    job.remove_old_snapshots
+    server.snapshots.should == 'snap2'
+  end
+
+  it "should kill off the last snapshot when the server is in remove_only and keep_snapshots is zero (second phase)" do
+    server = Factory.create(:server, :hostname => 'serverx4', :snapshots => 'snap2', :keep_snapshots => 0, :remove_only => true)
+    job = Factory.create(:backup_job, :server => server)
+    job.should_receive(:run_command).with("/bin/pfexec /sbin/zfs destroy backup/serverx4@snap2", "remove_snapshot snap2")
+    server.snapshots.should == 'snap2'
+    job.remove_old_snapshots
+    server.snapshots.should == ''
   end
 
   it "should remove the server is the filesystem is removed" do
