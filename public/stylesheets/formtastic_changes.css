@@ -13,10 +13,16 @@ form.formtastic {
   padding: 1em;
 }
 
-form.formtastic fieldset ol li p.inline-hints { 
-  color:#333; 
+form.formtastic fieldset ol li p.inline-hints {
+  color:#333;
   font-style: italic;
   font-size: smaller;
 }
 
 form.formtastic fieldset.separator { border: 1px dotted; margin: 1em; padding: .5em;}
+
+/* Tigthen up the spacing below the last item of a fieldset */
+section form.formtastic fieldset ol > :last-child { margin-bottom: 0.5em !important; }
+
+/* A smaller submit button for nexted forms, snuggled up to the input field */
+section form.formtastic button.snuggled { padding: 4px 8px; margin-left: 26%;}
