@@ -4,7 +4,7 @@ class BackupJob < ActiveRecord::Base
   belongs_to :backup_server
   has_many :commands, :dependent => :destroy
   has_one :backup_job_stats
-  
+
   named_scope :running, :conditions => {:finished => false}, :order => 'updated_at DESC', :include => [:server]
   named_scope :queued, :conditions => {:status => 'queued'}, :order => 'created_at ASC', :include => [:server, :backup_server]
   named_scope :latest_problems, :conditions => "status NOT IN ('OK','running','queued', 'done')", :order => 'updated_at DESC', :limit => 20, :include => [:server]
@@ -205,6 +205,83 @@ class BackupJob < ActiveRecord::Base
     remove_old_snapshots
   end
 
+  def run_get_snapshots
+    run_command("/sbin/zfs list -H -r -o name -t snapshot #{self.fs} | /usr/gnu/bin/sed -e 's/.*@//'", "get_snapshots")
+  end
+
+  # The snapshot age code requires snapshots to be named according to a
+  # seconds_after_epoch naming scheme. Retcon generates such names, external
+  # tools might not. This algorithm refuses to clean up ill-named snapshots
+  # and returns nil
+  ONEDAY = 24 * 3600
+  BRACKETS = 0 .. 2
+  BRACKET_DAYS = [ 1, 7, 30 ]
+  def find_snapshot_to_delete(names)
+    # First, check the snapshot names for sanity.
+    return nil if names.select{|x| !/^\d+$/.match(x)}.size > 0
+
+    brackets = []
+    bracket_minage = []
+    bracket_maxage = []
+    snaps = names.map{|x| x.to_i}
+    bracket_retention = [ server.retention_days.to_i, server.retention_weeks.to_i, server.retention_months.to_i ]
+    last_maxage = 0
+    interval_secs = server.interval_hours * 3600
+
+    BRACKETS.each do |bracket|
+      bracket_minage[bracket] = bracket == 0 ? 0 : bracket_maxage[bracket - 1]
+      bracket_maxage[bracket] = ONEDAY * BRACKET_DAYS[bracket] * bracket_retention[bracket]
+      bracket_maxage[bracket] += last_maxage
+      last_maxage = bracket_maxage[bracket]
+      brackets[bracket] = []
+    end
+    #puts bracket_retention.inspect
+    #puts bracket_maxage.inspect
+
+    # Assign each snapshot to a bracket of time.
+    latest = snaps.sort.max
+    snaps.sort.each do |snap|
+      age = latest - snap
+      #puts snap.inspect + ' ' + age.inspect
+      out_of_range = true
+      BRACKETS.each do |bracket|
+        if age < bracket_maxage[bracket]
+          brackets[bracket] << snap
+          out_of_range = false
+          break
+        end
+      end
+      if out_of_range
+        # If the snapshot is in none of the brackets, we have our best candidate!
+        return snap.to_s
+      end
+    end
+
+    # No snapshots are completely out of range. For each bracket,
+    # see if we have too many snapshots in that bracket. If we do,
+    # we select the one with the smallest time difference to its
+    # successor (and eventual replacement).
+    candidate = nil
+    BRACKETS.each do |bracket|
+      if brackets[bracket].size > bracket_retention[bracket]
+        previous = nil
+        min_time_diff = nil
+        brackets[bracket].each do |snap|
+          if previous
+            time_diff = snap - previous
+            if !min_time_diff || min_time_diff > time_diff
+              min_time_diff = time_diff
+              candidate = previous
+              #puts "candidate #{candidate} #{time_diff}"
+            end
+          end
+          previous = snap
+        end
+      end
+    end
+    candidate ? candidate.to_s : nil
+  end
+
   def remove_old_snapshots
     snaps = server.current_snapshots
     if server.remove_only?
@@ -213,7 +290,7 @@ class BackupJob < ActiveRecord::Base
       if snaps.size == server.keep_snapshots
         server.keep_snapshots -= 1
         server.save # next snapshot will vanish on the next run
-        run_command("/sbin/zfs list -H -r -o name -t snapshot #{self.fs} | /usr/gnu/bin/sed -e 's/.*@//'", "get_snapshots")
+        run_get_snapshots
       elsif snaps.size == 0
         run_command("/bin/pfexec /sbin/zfs destroy #{self.fs}", "remove_fs")
       else
@@ -222,13 +299,21 @@ class BackupJob < ActiveRecord::Base
         server.snapshots = snaps.join(',')
         server.save
       end
+    elsif server.retention_days.to_i > 0
+      if snap = find_snapshot_to_delete(snaps)
+        run_command("/bin/pfexec /sbin/zfs destroy #{self.fs}@#{snap}", "remove_snapshot #{snap}")
+        server.snapshots = snaps.select{|s| s != snap}.join(',')
+        server.save
+      else
+        run_get_snapshots
+      end
     elsif snaps.size > server.keep_snapshots
       snap = snaps.delete_at(0)
       run_command("/bin/pfexec /sbin/zfs destroy #{self.fs}@#{snap}", "remove_snapshot #{snap}")
       server.snapshots = snaps.join(',')
       server.save
     else
-      run_command("/sbin/zfs list -H -r -o name -t snapshot #{self.fs} | /usr/gnu/bin/sed -e 's/.*@//'", "get_snapshots")
+      run_get_snapshots
     end
   end
 

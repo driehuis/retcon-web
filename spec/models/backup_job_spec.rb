@@ -284,6 +284,28 @@ describe BackupJob do
     server.snapshots.should == 'snap1,snap2,snap3,snap4,snap5,snap6'
   end
 
+  it "should remove the oldest snapshot when it is completely out of range" do
+    snaps = '1427033911,1427120348,1427206761,1427293237,1427379649,1427466019,1427552512,1427638945,1427725363,1427811865,1427898253,1427984738,1428071128,1428157598,1428244049,1428330505,1428416971,1428503403,1428589808,1428703873,1428810529,1428951991'
+    snaps2 = snaps.gsub(/^\d+,/, '')
+    server = Factory.create(:server, :hostname => 'server1', :keep_snapshots => 5,
+      :retention_days => 4, :retention_weeks => 2, :retention_months => 0, :snapshots => snaps)
+    job = Factory.create(:backup_job, :server => server)
+    job.should_receive(:run_command).with("/bin/pfexec /sbin/zfs destroy backup/server1@1427033911", "remove_snapshot 1427033911")
+    job.remove_old_snapshots
+    server.snapshots.should == snaps2
+  end
+
+  it "should remove the snapshot with the shortest interval when all snapshots are in range" do
+    snaps = '1427033911,1427120348,1427206761,1427293237,1427379649,1427466019,1427552512,1427638945,1427725363,1427811865,1427898253,1427984738,1428071128,1428157598,1428244049,1428330505,1428416971,1428503403,1428589808,1428703873,1428810529,1428951991'
+    snaps2 = snaps.gsub(/,1427379649,/, ',')
+    server = Factory.create(:server, :hostname => 'server1', :keep_snapshots => 5,
+      :retention_days => 7, :retention_weeks => 8, :retention_months => 0, :snapshots => snaps)
+    job = Factory.create(:backup_job, :server => server)
+    job.should_receive(:run_command).with("/bin/pfexec /sbin/zfs destroy backup/server1@1427379649", "remove_snapshot 1427379649")
+    job.remove_old_snapshots
+    server.snapshots.should == snaps2
+  end
+
   it "should run split_rsyncs after one rsync is finished" do
     job = Factory(:backup_job)
     job.should_receive(:run_split_rsyncs)
