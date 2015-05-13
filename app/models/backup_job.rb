@@ -274,19 +274,22 @@ class BackupJob < ActiveRecord::Base
     # see if we have too many snapshots in that bracket. If we do,
     # we select the one with the smallest time difference to its
     # successor (and eventual replacement).
+    # Exception: we never select the oldest snapshot in a bracket.
     candidate = nil
     BRACKETS.each do |bracket|
       if brackets[bracket].size > bracket_retention[bracket]
         previous = nil
         min_time_diff = nil
+        first_candidate = true
         brackets[bracket].each do |snap|
           if previous
             time_diff = snap - previous
             if !min_time_diff || min_time_diff > time_diff
               min_time_diff = time_diff
-              candidate = previous
+              candidate = first_candidate ? snap : previous
               #puts "candidate #{candidate} #{time_diff}"
             end
+            first_candidate = false
           end
           previous = snap
         end
