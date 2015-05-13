@@ -253,7 +253,20 @@ class BackupJob < ActiveRecord::Base
       end
       if out_of_range
         # If the snapshot is in none of the brackets, we have our best candidate!
+        t1 = Time.at(snap).strftime("%F %H:%M")
+        logger.debug "selecting snapshot #{snap} #{t1}: out of range"
         return snap.to_s
+      end
+    end
+
+    BRACKETS.each do |bracket|
+      if brackets[bracket].size == 0
+        logger.debug "bracket #{bracket} is empty"
+      else
+        count=brackets[bracket].size
+        t1 = Time.at(brackets[bracket].first).strftime("%F %H:%M")
+        t2 = Time.at(brackets[bracket].last).strftime("%F %H:%M")
+        logger.debug "bracket #{bracket}: #{count} entries from #{t1} to #{t2}"
       end
     end
 
@@ -278,6 +291,10 @@ class BackupJob < ActiveRecord::Base
           previous = snap
         end
       end
+    end
+    if candidate
+      t1 = Time.at(candidate).strftime("%F %H:%M")
+      logger.debug "selecting snapshot #{candidate} #{t1}: least time difference"
     end
     candidate ? candidate.to_s : nil
   end
