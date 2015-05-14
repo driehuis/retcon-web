@@ -40,7 +40,7 @@
 <tbody>
 <tr>
   <td><%=h @server.path || '/' %></td>
-  <td><%=h @server.keep_snapshots %></td>
+  <td><%=h display_retention @server %></td>
   <td><%=h @server.interval_hours %></td>
   <td><%=h @server.window_start %></td>
   <td><%=h @server.window_stop %></td>
