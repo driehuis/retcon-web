@@ -284,7 +284,7 @@ class BackupJob < ActiveRecord::Base
         brackets[bracket].each do |snap|
           if previous
             time_diff = snap - previous
-            if !min_time_diff || min_time_diff > time_diff
+            if !min_time_diff || min_time_diff >= time_diff
               min_time_diff = time_diff
               candidate = first_candidate ? snap : previous
               #puts "candidate #{candidate} #{time_diff}"
