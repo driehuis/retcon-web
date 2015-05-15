@@ -235,14 +235,11 @@ class BackupJob < ActiveRecord::Base
       last_maxage = bracket_maxage[bracket]
       brackets[bracket] = []
     end
-    #puts bracket_retention.inspect
-    #puts bracket_maxage.inspect
 
     # Assign each snapshot to a bracket of time.
     latest = snaps.sort.max
     snaps.sort.each do |snap|
       age = latest - snap
-      #puts snap.inspect + ' ' + age.inspect
       out_of_range = true
       BRACKETS.each do |bracket|
         if age < bracket_maxage[bracket]
@@ -287,7 +284,6 @@ class BackupJob < ActiveRecord::Base
             if !min_time_diff || min_time_diff >= time_diff
               min_time_diff = time_diff
               candidate = first_candidate ? snap : previous
-              #puts "candidate #{candidate} #{time_diff}"
             end
             first_candidate = false
           end
