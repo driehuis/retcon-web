@@ -9,6 +9,12 @@ class Server < ActiveRecord::Base
          :unless => Proc.new { |server| server.window_stop.blank?  }
 	validates_presence_of :comment, :unless => Proc.new { |s| s.backup_server_id == nil || s.enabled == true },
 				 :message => 'You must enter a ticket number in the comment field when you disable a backup.'
+  validates_inclusion_of :retention_weeks, :in => 1..9,
+         :message => 'Should be a valid number of weeks! Ranging from 1 to 9',
+         :unless => Proc.new { |server| server.retention_days.to_i == 0 }
+  validates_inclusion_of :retention_months, :in => 0..24,
+         :message => 'Should be a valid number of months! Ranging from 0 to 24',
+         :unless => Proc.new { |server| server.retention_days.to_i == 0 }
 
   has_many :profilizations, :dependent => :destroy
   has_many :profiles, :through => :profilizations, :include => [:includes, :excludes, :splits]
@@ -35,6 +41,9 @@ class Server < ActiveRecord::Base
     self.path = '/' unless self.path
     self.interval_hours=24 unless self.interval_hours
     self.keep_snapshots = 21 unless self.keep_snapshots
+    self.retention_days = 0 unless self.retention_days
+    self.retention_weeks = 0 unless self.retention_weeks
+    self.retention_months = 0 unless self.retention_months
   end
 
   def previous_jobs
