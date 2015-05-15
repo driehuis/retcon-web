@@ -20,7 +20,8 @@
       <%= f.input :keep_snapshots, :required => true, :label => 'Keep this number of snapshots',
         :hint => 'Normally, Retcon uses this value as the maximum number of snapshots to keep. ' +
         'This setting will be overridden if daily retention is defined. ' +
-        'In both cases, this setting affects the number of job logs that Retcon keeps.' %>
+        'In both cases, this setting affects the number of job logs that Retcon keeps, ' +
+        'so do not lower this value when you use daily retention.' %>
       <%= f.input :retention_days, :required => false, :label => 'Daily snapshots to retain' %>
       <%= f.input :retention_weeks, :required => false, :label => 'Weekly snapshots to retain' %>
       <%= f.input :retention_months, :required => false, :label => 'Monthly snapshots to retain',
