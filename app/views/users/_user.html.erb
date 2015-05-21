@@ -1,4 +1,4 @@
-<% semantic_form_for @user do |f| %>
+<%= semantic_form_for @user do |f| %>
   <% f.inputs do %>
     <%= f.error_messages %>
     <% if Role.find_by_name('admin').users.include?(current_user) %>

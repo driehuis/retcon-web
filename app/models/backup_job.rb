@@ -5,9 +5,9 @@ class BackupJob < ActiveRecord::Base
   has_many :commands, :dependent => :destroy
   has_one :backup_job_stats
 
-  named_scope :running, :conditions => {:finished => false}, :order => 'updated_at DESC', :include => [:server]
-  named_scope :queued, :conditions => {:status => 'queued'}, :order => 'created_at ASC', :include => [:server, :backup_server]
-  named_scope :latest_problems, :conditions => "status NOT IN ('OK','running','queued', 'done')", :order => 'updated_at DESC', :limit => 20, :include => [:server]
+  scope :running, :conditions => {:finished => false}, :order => 'updated_at DESC', :include => [:server]
+  scope :queued, :conditions => {:status => 'queued'}, :order => 'created_at ASC', :include => [:server, :backup_server]
+  scope :latest_problems, :conditions => "status NOT IN ('OK','running','queued', 'done')", :order => 'updated_at DESC', :limit => 20, :include => [:server]
 
   def fs
     self.backup_server.zpool + '/' + self.server.hostname

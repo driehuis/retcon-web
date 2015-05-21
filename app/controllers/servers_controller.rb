@@ -4,8 +4,11 @@ class ServersController < ApplicationController
   # GET /servers
   # GET /servers.xml
   def index
-   @search = Server.accessible_by(current_ability).search(params[:search])
-   @servers = @search.find(:all, :order => 'servers.hostname', :include => [:backup_server]).paginate(:page => params[:page], :per_page => 30)
+   #@search = Server.accessible_by(current_ability).search(params[:search]).relation
+   #@servers = @search.scoped(:order => 'servers.hostname', :include => [:backup_server]).paginate(:page => params[:page], :per_page => 31)
+   @search = Server.accessible_by(current_ability).search(params[:search]).paginate(:page => params[:page], :per_page => 31)
+   @servers = @search.order('servers.hostname').includes([:backup_server])
+   #@search = @search.first
 
    if request.xhr?
      render :partial => 'listing'

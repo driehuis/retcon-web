@@ -18,10 +18,10 @@ module ApplicationHelper
     @actions ||= []
     if @actions.size > 0
       content_for :sidebar do
-        '<ul>' +
+        raw('<ul>' +
         @actions.map do | action |
-          "<li>" + link_to( action[0], action[1]) + "</li>"
-        end.join("\n") + '</ul>'
+          "<li>" + link_to( action[0], h(action[1])) + "</li>"
+        end.join("\n") + '</ul>')
       end
     end
   end

@@ -2,7 +2,7 @@
   Profiles
 <% end %>
 <% content_for :search do %>
-  <% form_for @search, :html => {:id => 'search'} do |f| %>
+  <%= form_for @search, :html => {:id => 'search'} do |f| %>
       <%= f.text_field :name_like, :autofocus => 'autofocus' %>
   <% end %>
 <% end %>

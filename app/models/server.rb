@@ -47,7 +47,7 @@ class Server < ActiveRecord::Base
   end
 
   def previous_jobs
-    backup_jobs.find(:all, :order => 'created_at ASC')
+    backup_jobs.all(:order => 'created_at ASC')
   end
 
   def last_job_status
@@ -56,14 +56,14 @@ class Server < ActiveRecord::Base
   end
 
   def latest_problems
-    problems.find(:all, :order => 'created_at DESC', :limit=>10, :include => :backup_server)
+    problems.all(:order => 'created_at DESC', :limit=>10, :include => :backup_server)
   end
 
   def latest_jobs(offset = 0)
     count = (self.keep_snapshots * 1.5).to_i
     offset = 0 if offset < 0
     count = 10 if count < 10
-    backup_jobs.find(:all, :order => 'created_at DESC', :limit => count, :include => :backup_server, :offset => offset)
+    backup_jobs.all(:order => 'created_at DESC', :limit => count, :include => :backup_server, :offset => offset)
   end
 
   def to_s
@@ -169,7 +169,7 @@ class Server < ActiveRecord::Base
     offset = 0 if offset < 0
     count = backup_jobs.all.size - offset
     if (count > 0)
-      backup_jobs.find(:all, :order => 'created_at DESC', :offset => offset, :limit => count).each do | job |
+      backup_jobs.all(:order => 'created_at DESC', :offset => offset, :limit => count).each do | job |
         job.destroy
       end
     end

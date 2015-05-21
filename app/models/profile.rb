@@ -8,8 +8,8 @@ class Profile < ActiveRecord::Base
   has_many :profilizations, :dependent => :destroy
   has_many :servers, :through => :profilizations
 
-  named_scope :public, :conditions => { :exclusive => false }
-  named_scope :public_plus, lambda { |*profilename|
+  scope :public, :conditions => { :exclusive => false }
+  scope :public_plus, lambda { |*profilename|
     {:conditions => ["exclusive = ? or name = ?", false, profilename] }
   }
 
