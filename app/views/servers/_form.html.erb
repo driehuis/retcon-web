@@ -1,6 +1,6 @@
 <%= semantic_form_for(@server) do |f| %>
-  <% f.inputs do %>
-    <% f.inputs :name => "General", :class => 'separator' do %>
+  <%= f.inputs do %>
+    <%= f.inputs :name => "General", :class => 'separator' do %>
       <%= f.input :hostname %>
       <%= f.input :comment, :required => false, :hint => 'Leave comment blank. Add a comment to document exceptions or work in progress. Include a ticket number is possible.' %>
       <%= f.input :enabled, :required => false, :label => 'Backups enabled?', :hint => '&nbsp;&nbsp;Disabling backups makes Retcon completely ignore this server.<br>&nbsp;&nbsp;Only disable backups for short periods of planned work.' %>
@@ -9,13 +9,13 @@
       <%= f.input :ssh_port, :required => true, :hint => 'Probably port 22' %>
       <%= f.input :path, :required => true, :hint => 'Probably /', :label => 'Rsync start path' %>
     <% end %>
-    <% f.inputs :name => "Quirks", :class => 'separator' do %>
+    <%= f.inputs :name => "Quirks", :class => 'separator' do %>
       <%= f.fields_for :quirk_details do |ad| %>
         <%= render 'quirk_detail_fields', :f => ad %>
       <% end %>
       <p><%= link_to_add_fields "Add Quirk", f, :quirk_details %></p>
     <% end %>
-    <% f.inputs :name => "Backup config", :class => 'separator' do %>
+    <%= f.inputs :name => "Backup config", :class => 'separator' do %>
       <%= f.input :interval_hours, :required => true %>
       <%= f.input :keep_snapshots, :required => true, :label => 'Keep this number of snapshots',
         :hint => 'Normally, Retcon uses this value as the maximum number of snapshots to keep. ' +

@@ -13,9 +13,6 @@ module RetconWeb
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    # Add additional load paths for your own custom dirs
-    # config.load_paths += %W( #{RAILS_ROOT}/extras )
-
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
@@ -37,5 +34,7 @@ module RetconWeb
 
     # Scrub sensitive parameters from your log
     config.filter_parameters += [:password]    
+    config.assets.enabled = true
+    config.assets.version = '1.0'
   end
 end

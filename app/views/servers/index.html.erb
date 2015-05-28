@@ -2,8 +2,8 @@
    Servers
 <% end %>
 <% content_for :search do %>
-  <%= form_for @search, :html => {:id => 'search'} do |f| %>
-    <%= f.text_field :hostname_contains, :autofocus => 'autofocus' %>
+  <%= form_for @search, :url => servers_path, :as => 'search' do |f| %>
+    <%= f.text_field :hostname_cont, :autofocus => 'autofocus' %>
   <% end %>
 <% end %>
 

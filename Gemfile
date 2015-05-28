@@ -1,24 +1,36 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.1'
-gem 'authlogic', '~> 3.0'
-gem 'formtastic', '2.3.1'
+gem 'rails', '~> 3.1.0'
+gem 'authlogic', '3.1.0'
+gem 'formtastic', '~> 2.0'
 gem 'cancan', '1.6.8'
-gem 'will_paginate', '~> 3.0'
-gem 'rake', '0.9.2.2'
-gem 'test-unit', '1.2.3'
-gem 'cells', '3.5.6'
-gem 'meta_search', '0.5.0'
+#gem 'will_paginate', '~> 3.0'
+gem 'kaminari'
+#gem 'rake', '0.9.2.2'
+gem 'cells', '~> 3.6.0'
+gem 'ransack'
+group :assets do
+  gem 'sass-rails',   '~> 3.1.7'
+  gem 'coffee-rails', '~> 3.1.1'
+  gem 'uglifier',     '>= 1.0.3'
+end
+
+# jQuery is the default JavaScript library in Rails 3.1
+gem 'jquery-rails'
 group :production, :development do
   gem 'activerecord-postgresql-adapter'
   gem 'pg', '0.17.1'
 end
+group :test do
+  gem 'test-unit', '1.2.3'
+end
 group :development, :test do
   gem 'sqlite3'
-  #gem "rspec", "= 1.2.9"
-  gem "rspec-rails", "~> 2.0"
+  gem "rspec-rails", "~> 3.0"
   gem 'factory_girl', '= 2.6.4', :require => false
   gem 'database_cleaner'
+  gem 'debugger'
 end
 #gem 'prototype-rails'
 gem 'dynamic_form'  # Rails 2 compatibility
+gem 'quiet_assets'

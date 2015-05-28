@@ -1,11 +1,11 @@
 class ProfilesController < ApplicationController
   load_and_authorize_resource
-  
+
   # GET /profiles
   # GET /profiles.xml
   def index
     @search = Profile.accessible_by(current_ability).public.search(params[:search])
-    @profiles = @search.all(:order => 'name')
+    @profiles = @search.result(:order => 'name')
     if request.xhr?
       render :partial => 'listing'
     else

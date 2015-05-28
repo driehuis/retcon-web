@@ -10,7 +10,11 @@ RetconWeb::Application.routes.draw do
   match 'login' => 'user_sessions#new', :as => :login
   match 'logout' => 'user_sessions#destroy', :as => :logout
   resources :user_sessions
-  resources :profiles
+  resources :profiles do
+    resources :excludes
+    resources :includes
+    resources :splits
+  end
   resources :quirks
   resources :backup_servers
   resources :servers

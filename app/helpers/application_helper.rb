@@ -26,8 +26,9 @@ module ApplicationHelper
     end
   end
 
+  # TODO: replace with nav_link_to gem
   def selected_tab?(cont)
-    @controller.controller_name == cont ? 'active' : 'inactive'
+    params[:controller] == cont ? 'active' : 'inactive'
   end
 
   def display_backup_duration(job)
