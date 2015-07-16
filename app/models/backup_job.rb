@@ -96,6 +96,7 @@ class BackupJob < ActiveRecord::Base
     return "FAIL" if Regexp.new(/Command not found/).match(output)
     return "FAIL" if Regexp.new(/Input\/output error \(5\)/).match(output)
     return "FAIL" if Regexp.new(/IO error encountered/).match(output)
+    return "PARTIAL" if Regexp.new(/^rsync error: some.*transferred/).match(output)
     return "FAIL" if Regexp.new(/^rsync error:/).match(output)
     if match = Regexp.new(/\((\d+) bytes received so far\)/).match(output)
       return "FAIL" if match[1].to_i == 0
