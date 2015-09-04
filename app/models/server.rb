@@ -9,8 +9,8 @@ class Server < ActiveRecord::Base
          :unless => Proc.new { |server| server.window_stop.blank?  }
 	validates_presence_of :comment, :unless => Proc.new { |s| s.backup_server_id == nil || s.enabled == true },
 				 :message => 'You must enter a ticket number in the comment field when you disable a backup.'
-  validates_inclusion_of :retention_weeks, :in => 1..9,
-         :message => 'Should be a valid number of weeks! Ranging from 1 to 9',
+  validates_inclusion_of :retention_weeks, :in => 1..26,
+         :message => 'Should be a valid number of weeks! Ranging from 1 to 26',
          :unless => Proc.new { |server| server.retention_days.to_i == 0 }
   validates_inclusion_of :retention_months, :in => 0..24,
          :message => 'Should be a valid number of months! Ranging from 0 to 24',
