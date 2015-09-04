@@ -96,6 +96,8 @@ class BackupJob < ActiveRecord::Base
     return "FAIL" if Regexp.new(/Command not found/).match(output)
     return "FAIL" if Regexp.new(/Input\/output error \(5\)/).match(output)
     return "FAIL" if Regexp.new(/IO error encountered/).match(output)
+    return "PARTIAL" if Regexp.new(/^rsync error: some.*transferred/).match(output)
+    return "FAIL" if Regexp.new(/^rsync error:/).match(output)
     if match = Regexp.new(/\((\d+) bytes received so far\)/).match(output)
       return "FAIL" if match[1].to_i == 0
     end
@@ -221,15 +223,12 @@ class BackupJob < ActiveRecord::Base
     return nil if names.select{|x| !/^\d+$/.match(x)}.size > 0
 
     brackets = []
-    bracket_minage = []
     bracket_maxage = []
     snaps = names.map{|x| x.to_i}
     bracket_retention = [ server.retention_days.to_i, server.retention_weeks.to_i, server.retention_months.to_i ]
     last_maxage = 0
-    interval_secs = server.interval_hours * 3600
 
     BRACKETS.each do |bracket|
-      bracket_minage[bracket] = bracket == 0 ? 0 : bracket_maxage[bracket - 1]
       bracket_maxage[bracket] = ONEDAY * BRACKET_DAYS[bracket] * bracket_retention[bracket]
       bracket_maxage[bracket] += last_maxage
       last_maxage = bracket_maxage[bracket]
