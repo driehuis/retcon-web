@@ -18,8 +18,8 @@
     <td><%= profile.splits.size %></td>
     <td>
       <% if can?(:manage, profile) %>
-        <%= link_to 'Edit', edit_profile_path(profile) %> | 
-        <%= link_to 'Destroy', profile, :confirm => 'Are you sure?', :method => :delete %>
+        <%= link_to 'Edit', edit_profile_path(profile) %> |
+        <%= link_to 'Destroy', profile, :confirm => "Are you sure you want to destroy profile #{profile.name}?", :method => :delete %>
       <% end %>
     </td>
   </tr>
