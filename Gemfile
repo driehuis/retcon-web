@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '2.3.18'
 gem 'authlogic', '2.1.3'
-gem 'formtastic', '0.9.7'
+gem 'formtastic', '0.9.8'
 gem 'cancan', '1.3.4'
 gem 'searchlogic', '2.4.14'
 gem 'will_paginate', '2.3.12'
