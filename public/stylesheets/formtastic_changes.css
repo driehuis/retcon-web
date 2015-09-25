@@ -26,3 +26,6 @@ section form.formtastic fieldset ol > :last-child { margin-bottom: 0.5em !import
 
 /* A smaller submit button for nexted forms, snuggled up to the input field */
 section form.formtastic button.snuggled { padding: 4px 8px; margin-left: 26%;}
+
+/* This horrible hack is needed to work around a bug in formtastic < 2.1.0 */
+section form.formtastic fieldset ol fieldset ol ul.errors { color:#cc0000; margin-left: 25%; }
