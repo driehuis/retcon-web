@@ -2,4 +2,5 @@
   <%= f.select(:quirk_id, Quirk.all.collect {|p| [p.name,p.id]}) %>
   <%= f.text_field :comment, :size => 50 %>
   <%= link_to_remove_fields "remove", f %>
+  <%= f.semantic_errors :comment %>
 </p>
