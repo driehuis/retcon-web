@@ -21,17 +21,17 @@ describe Profile do
   end
 
   it "should have a class method to fetch all public profiles" do
-    p1 = FactoryGirl.build(:profile, :exclusive => true)
-    p2 = FactoryGirl.build(:profile)
+    p1 = FactoryGirl.create(:profile, :exclusive => true)
+    p2 = FactoryGirl.create(:profile)
     results = Profile.public
     results.count.should == 1
     results[0].exclusive.should == false
   end
 
   it "should only allow to attach an exclusive profile to one server" do
-    s1 = FactoryGirl.build(:server)
-    s2 = FactoryGirl.build(:server)
-    p = FactoryGirl.build(:profile, :exclusive => true)
+    s1 = FactoryGirl.create(:server)
+    s2 = FactoryGirl.create(:server)
+    p = FactoryGirl.create(:profile, :exclusive => true)
     p.servers << s1
     p.valid?.should == true
     p.servers << s2

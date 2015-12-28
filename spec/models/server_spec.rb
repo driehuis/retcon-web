@@ -70,20 +70,20 @@ describe Server do
   end
 
   it "should know if a backup is running" do
-    server = FactoryGirl.build(:server)
-    job = FactoryGirl.build(:backup_job, :server => server, :status => 'running', :finished => false)
+    server = FactoryGirl.create(:server)
+    job = FactoryGirl.create(:backup_job, :server => server, :status => 'running', :finished => false)
     server.backup_running?.should be true
   end
 
   it "should know when a backup is already queued" do
-    server = FactoryGirl.build(:server)
-    job = FactoryGirl.build(:backup_job, :server => server, :status => 'queued')
+    server = FactoryGirl.create(:server)
+    job = FactoryGirl.create(:backup_job, :server => server, :status => 'queued')
     server.backup_running?.should be true
   end
 
   it "should not mark a backup as running when the status is not queued or running" do
-    server = FactoryGirl.build(:server)
-    job = FactoryGirl.build(:backup_job, :server => server, :status => 'OK', :finished => true)
+    server = FactoryGirl.create(:server)
+    job = FactoryGirl.create(:backup_job, :server => server, :status => 'OK', :finished => true)
     server.backup_running?.should be false
   end
 
@@ -143,8 +143,8 @@ describe Server do
   end
 
   it "should know when its past the interval" do
-    s = FactoryGirl.build(:server, :interval_hours => 1)
-    j = FactoryGirl.build(:backup_job, :created_at => (Time.new - 3601), :server => s)
+    s = FactoryGirl.create(:server, :interval_hours => 1)
+    j = FactoryGirl.create(:backup_job, :created_at => (Time.new - 3601), :server => s)
     s.interval_passed?.should be true
 
     s.interval_hours = 3
@@ -263,7 +263,7 @@ describe Server do
   end
 
   it "should queue a backup when queue_backup is called" do
-    s = FactoryGirl.build(:server)
+    s = FactoryGirl.create(:server)
     s.backup_jobs.size.should == 0
     s.queue_backup
     s.backup_jobs.size.should == 1
@@ -288,8 +288,8 @@ describe Server do
   end
 
   it "should have a method that gets or creates an exclusive profile" do
-    server = FactoryGirl.build(:server)
-    p1 = FactoryGirl.build(:profile)
+    server = FactoryGirl.create(:server)
+    p1 = FactoryGirl.create(:profile)
     server.profiles << p1
     server.profiles.count.should == 1
     p2 = server.exclusive_profile

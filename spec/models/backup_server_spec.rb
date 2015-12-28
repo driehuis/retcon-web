@@ -63,29 +63,29 @@ describe BackupServer do
   end
 
   it "should know how to retrieve queued backups with at most max_backups" do
-    b = FactoryGirl.build(:backup_server, :max_backups => 2)
-    job1 = FactoryGirl.build(:backup_job, :backup_server => b, :status => 'queued')
-    job2 = FactoryGirl.build(:backup_job, :backup_server => b, :status => 'queued')
-    job3 = FactoryGirl.build(:backup_job, :backup_server => b, :status => 'queued')
+    b = FactoryGirl.create(:backup_server, :max_backups => 2)
+    job1 = FactoryGirl.create(:backup_job, :backup_server => b, :status => 'queued')
+    job2 = FactoryGirl.create(:backup_job, :backup_server => b, :status => 'queued')
+    job3 = FactoryGirl.create(:backup_job, :backup_server => b, :status => 'queued')
     b.queued_backups.size.should == 3
     b.next_queued.size.should == 2
   end
 
   it "should should take the already running backups into account" do
-    b = FactoryGirl.build(:backup_server, :max_backups => 3)
-    job1 = FactoryGirl.build(:backup_job, :backup_server => b, :status => 'running', :finished => false)
-    job2 = FactoryGirl.build(:backup_job, :backup_server => b, :status => 'running', :finished => false)
-    job3 = FactoryGirl.build(:backup_job, :backup_server => b, :status => 'queued')
-    job4 = FactoryGirl.build(:backup_job, :backup_server => b, :status => 'queued')
+    b = FactoryGirl.create(:backup_server, :max_backups => 3)
+    job1 = FactoryGirl.create(:backup_job, :backup_server => b, :status => 'running', :finished => false)
+    job2 = FactoryGirl.create(:backup_job, :backup_server => b, :status => 'running', :finished => false)
+    job3 = FactoryGirl.create(:backup_job, :backup_server => b, :status => 'queued')
+    job4 = FactoryGirl.create(:backup_job, :backup_server => b, :status => 'queued')
     b.queued_backups.size.should == 2
     b.next_queued.size.should == 1
   end
 
   it "should know how many backups are running" do
-    b = FactoryGirl.build(:backup_server)
-    job1 = FactoryGirl.build(:backup_job, :backup_server => b, :status => 'running', :finished => false)
-    job2 = FactoryGirl.build(:backup_job, :backup_server => b, :status => 'running', :finished => false)
-    job3 = FactoryGirl.build(:backup_job, :backup_server => b, :status => 'running', :finished => false)
+    b = FactoryGirl.create(:backup_server)
+    job1 = FactoryGirl.create(:backup_job, :backup_server => b, :status => 'running', :finished => false)
+    job2 = FactoryGirl.create(:backup_job, :backup_server => b, :status => 'running', :finished => false)
+    job3 = FactoryGirl.create(:backup_job, :backup_server => b, :status => 'running', :finished => false)
     b.running_backups.size.should == 3
   end
 
