@@ -27,7 +27,7 @@ end
 group :development, :test do
   gem 'sqlite3'
   gem "rspec-rails", "~> 3.0"
-  gem 'factory_girl', '= 2.6.4', :require => false
+  gem 'factory_girl_rails', "~> 3.0"
   gem 'database_cleaner'
   gem 'debugger'
 end
