@@ -35,6 +35,16 @@ describe Server do
     s.valid?.should be false
   end
 
+  it "should default to keep_snapshots=21" do
+    s = FactoryGirl.build(:server)
+    expect(s.keep_snapshots).to be == 21
+  end
+
+  it "should honor initializing keep_snapshots" do
+    s = FactoryGirl.build(:server, :keep_snapshots => 20)
+    expect(s.keep_snapshots).to be == 20
+  end
+
   it "should not accept impossible hours" do
     s = FactoryGirl.build(:server)
     s.window_start = 25

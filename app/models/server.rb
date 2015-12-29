@@ -26,6 +26,7 @@ class Server < ActiveRecord::Base
   belongs_to :user
   before_save :sanitize_inputs
   accepts_nested_attributes_for :quirk_details, :allow_destroy => true
+  after_initialize :set_default_values
 
   def exclusive_profile
     if profile = profiles.select{|p| p.exclusive?}[0]
@@ -35,7 +36,7 @@ class Server < ActiveRecord::Base
     end
   end
 
-  def after_initialize
+  def set_default_values
     return unless new_record?
     self.ssh_port = 22 unless self.ssh_port
     self.path = '/' unless self.path
