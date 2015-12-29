@@ -47,21 +47,12 @@ describe Server do
   end
 
   it "should be valid when the other attributes are not given" do
-    s = FactoryGirl.build(:server)
+    s = FactoryGirl.create(:server)
+    bs = FactoryGirl.create(:backup_server)
     s.connect_to = nil
-    s.enabled = nil
-    s.backup_server_id = nil
+    s.enabled = true
+    s.backup_server_id = bs.id
     s.valid?.should be true
-  end
-
-  it "should provide a instance method to determine valid backup servers" do
-    s1 = FactoryGirl.build(:server, :connect_to => '127.0.0.1')
-    s2 = FactoryGirl.build(:server)
-    s2.connect_to = nil
-    BackupServer.should_receive(:available_for).with(s1.connect_to)
-    BackupServer.should_receive(:available_for).with(s2.hostname)
-    s1.possible_backup_servers
-    s2.possible_backup_servers
   end
 
   it "should provide a to_s method" do

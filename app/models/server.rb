@@ -70,10 +70,6 @@ class Server < ActiveRecord::Base
     hostname
   end
 
-  def possible_backup_servers
-    BackupServer.available_for(connect_to.blank? ? hostname : connect_to)
-  end
-
   def backup_running?
     return false if self.backup_jobs.size == 0
     return true if self.backup_jobs.queued.size > 0

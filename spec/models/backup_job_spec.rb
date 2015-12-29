@@ -82,7 +82,6 @@ describe BackupJob do
   it "should pull the database for commands to pick up and run the callback" do
     job = FactoryGirl.create(:backup_job)
     command = FactoryGirl.create(:command, :backup_job => job)
-    #job.should_receive(:run_callback).once.with(command)
     expect(job).to receive(:run_callback).once.with(command)
     job.wakeup
   end
@@ -90,7 +89,6 @@ describe BackupJob do
   it "it should not run the callback when the command has no exitstatus" do
     job = FactoryGirl.build(:backup_job)
     command = FactoryGirl.build(:command, :backup_job => job, :exitstatus => nil)
-    #job.should_not_receive(:run_callback).with(command)
     expect(job).not_to receive(:run_callback).with(command)
     job.wakeup
   end
@@ -98,7 +96,6 @@ describe BackupJob do
   it "should call the right method when being called back" do
     job = FactoryGirl.build(:backup_job)
     command = FactoryGirl.build(:command, :label => 'snapshot')
-    #job.should_receive(:after_snapshot).with(command)
     expect(job).to receive(:after_snapshot).with(command)
     job.run_callback(command)
   end
@@ -106,14 +103,12 @@ describe BackupJob do
   it "should parse the rest of the label as command args" do
     job = FactoryGirl.create(:backup_job)
     command = FactoryGirl.create(:command, :label => 'remove_snapshot 1')
-    #job.should_receive(:after_rsync).with(command, '1')
     expect(job).to receive(:after_remove_snapshot).with(command, '1')
     job.run_callback(command)
   end
 
   it "should prepare the filesystem when it starts running and set its status to running" do
     job = FactoryGirl.build(:backup_job, :status => 'queued')
-    #job.should_receive(:prepare_fs)
     expect(job).to receive(:prepare_fs)
     job.run
     job.status.should == 'running'
@@ -122,7 +117,6 @@ describe BackupJob do
 
   it "prepare_fs should ask if the filesystem exists" do
     job = FactoryGirl.build(:backup_job)
-    #job.should_receive(:run_command).with("/sbin/zfs list #{job.fs}", "fs_exists")
     expect(job).to receive(:run_command).with("/sbin/zfs list #{job.fs}", "fs_exists")
     job.prepare_fs
   end
@@ -130,7 +124,6 @@ describe BackupJob do
   it "should start the rsyncs if the filesystem exists" do
     job =  FactoryGirl.build(:backup_job)
     command = FactoryGirl.build(:command, :exitstatus => 0)
-    #job.should_receive(:start_rsyncs)
     expect(job).to receive(:start_rsyncs)
     job.after_fs_exists(command)
   end
@@ -141,7 +134,6 @@ describe BackupJob do
     server.remove_only = true
     server.save
     command = FactoryGirl.build(:command, :exitstatus => 0)
-    #job.should_receive(:cleanup)
     expect(job).to receive(:cleanup)
     job.after_fs_exists(command)
   end
