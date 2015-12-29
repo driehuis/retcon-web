@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '~> 3.1.0'
-gem 'authlogic', '3.1.0'
+gem 'authlogic', '3.2.0'
 gem 'formtastic', '~> 2.0'
 gem 'cancan', '1.6.8'
 #gem 'will_paginate', '~> 3.0'
