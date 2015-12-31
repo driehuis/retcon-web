@@ -13,3 +13,4 @@ public/stylesheets/all.css
 *.swo
 .rvmrc
 .bundle
+.byebug_history
