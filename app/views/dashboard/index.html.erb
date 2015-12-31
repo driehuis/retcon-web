@@ -24,6 +24,6 @@
   <% content_for :header do %>
     Log in
   <% end %>
-  <%= render_cell :login, :login %>
+  <% controller.redirect_to login_path %>
 <% end %>
 </section>
