@@ -276,16 +276,21 @@ describe Server do
     s.last_started.should be_nil
   end
 
+  # The original algorithm was never to keep more jobs than keep_snapshots.
+  # Currently, we keep 150% of keep_snapshots, plus four. This gives us
+  # some breathing room in case a backupjob makes no snapshot (for
+  # example, because its rsync FAILed), so that we improve our chances to
+  # retain some extra log information about failed jobs.
+  # With keep_snapshots => 4, we should keep 6+4=10 backup jobs.
   it "should cleanup old backupjobs" do
-    pending "Not sure what behaviour is prefered now"
-    server = FactoryGirl.create(:server, :keep_snapshots => 5)
-    6.times do
+    server = FactoryGirl.create(:server, :keep_snapshots => 4)
+    11.times do
       FactoryGirl.create(:backup_job, :backup_server => server.backup_server, :server => server, :status => 'OK')
     end
     job = server.backup_jobs.last
-    server.backup_jobs.size.should == 6
+    server.backup_jobs.size.should == 11
     server.cleanup_old_jobs
-    server.backup_jobs.size.should == 5
+    server.backup_jobs.size.should == 10
   end
 
   it "should have a method that gets or creates an exclusive profile" do
