@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
 
   rescue_from CanCan::AccessDenied do |exception|
-     redirect_to :controller => 'dashboard', :action => 'forbidden'
+     redirect_to :controller => 'user_sessions', :action => 'new'
   end
 
   private
