@@ -1,4 +1,6 @@
 <div class="toggle" style="border: 1px solid #000; padding: .8em; margin: .8em">
+<%- style = (command.exitstatus != 0 || command.exitstatus.blank?) ? 'block' : 'none' %>
+<%- inverse_style = style == 'block' ? 'none' : 'block' %>
 <table class="index sortable">
   <thead class="toggleme">
     <tr>
@@ -19,7 +21,6 @@
     </tr>
   </tbody>
 </table>
-<%- style = (command.exitstatus != 0 || command.exitstatus.blank?) ? 'block' : 'none' %>
 <table class="index sortable togglable" style="display: <%= style -%>">
   <thead>
     <tr><td>Command</td></tr>
@@ -41,5 +42,7 @@
     </tr>
   </tbody>
 </table>
-
+  <div class="togglable" style="display: <%= inverse_style -%>;">
+    <div class="floatbutton">More...</div>
+  </div>
 </div>
