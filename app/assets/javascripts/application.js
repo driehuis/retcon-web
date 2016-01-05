@@ -5,8 +5,9 @@ $(document).ready(function() {
   $('input#search_hostname_cont').quicksearch('#server_list ol li', {delay: 100});
   $(".sortable").tablesorter();
 
-  if (($("#search_hostname_cont")).val().length > 0) {
-    get_ajax_content($("#search_hostname_cont"))
+  var s = $("#search_hostname_cont");
+  if (s && s.val() && s.val().length > 0) {
+    get_ajax_content(s)
   }
   $("#search_hostname_cont").bind("keyup", function() {
     get_ajax_content(this)
