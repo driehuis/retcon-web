@@ -9,6 +9,9 @@ class BackupJob < ActiveRecord::Base
   scope :queued, :conditions => {:status => 'queued'}, :order => 'created_at ASC', :include => [:server, :backup_server]
   scope :latest_problems, :conditions => "status NOT IN ('OK','running','queued', 'done')", :order => 'updated_at DESC', :limit => 20, :include => [:server]
 
+  # For compatibility with ancient json consumers
+  self.include_root_in_json = true
+
   def fs
     self.backup_server.zpool + '/' + self.server.hostname
   end
