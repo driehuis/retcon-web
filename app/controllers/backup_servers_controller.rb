@@ -4,7 +4,7 @@ class BackupServersController < ApplicationController
   # GET /backup_servers
   # GET /backup_servers.xml
   def index
-    @backup_servers = BackupServer.accessible_by(current_ability).find(:all, :order => 'hostname', :include => [:user])
+    @backup_servers = BackupServer.accessible_by(current_ability).all(:order => 'hostname', :include => [:user])
 
     respond_to do |format|
       format.html # index.html.erb

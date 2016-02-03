@@ -18,16 +18,17 @@ module ApplicationHelper
     @actions ||= []
     if @actions.size > 0
       content_for :sidebar do
-        '<ul>' +
+        raw('<ul>' +
         @actions.map do | action |
-          "<li>" + link_to( action[0], action[1]) + "</li>"
-        end.join("\n") + '</ul>'
+          "<li>" + link_to( action[0], h(action[1])) + "</li>"
+        end.join("\n") + '</ul>')
       end
     end
   end
 
+  # TODO: replace with nav_link_to gem
   def selected_tab?(cont)
-    @controller.controller_name == cont ? 'active' : 'inactive'
+    params[:controller] == cont ? 'active' : 'inactive'
   end
 
   def display_backup_duration(job)

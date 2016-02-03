@@ -26,6 +26,9 @@ class Server < ActiveRecord::Base
   belongs_to :user
   before_save :sanitize_inputs
   accepts_nested_attributes_for :quirk_details, :allow_destroy => true
+  after_initialize :set_default_values
+  # For compatibility with ancient json consumers
+  self.include_root_in_json = true
 
   def exclusive_profile
     if profile = profiles.select{|p| p.exclusive?}[0]
@@ -35,7 +38,7 @@ class Server < ActiveRecord::Base
     end
   end
 
-  def after_initialize
+  def set_default_values
     return unless new_record?
     self.ssh_port = 22 unless self.ssh_port
     self.path = '/' unless self.path
@@ -47,7 +50,7 @@ class Server < ActiveRecord::Base
   end
 
   def previous_jobs
-    backup_jobs.find(:all, :order => 'created_at ASC')
+    backup_jobs.all(:order => 'created_at ASC')
   end
 
   def last_job_status
@@ -56,22 +59,18 @@ class Server < ActiveRecord::Base
   end
 
   def latest_problems
-    problems.find(:all, :order => 'created_at DESC', :limit=>10, :include => :backup_server)
+    problems.all(:order => 'created_at DESC', :limit=>10, :include => :backup_server)
   end
 
   def latest_jobs(offset = 0)
     count = (self.keep_snapshots * 1.5).to_i
     offset = 0 if offset < 0
     count = 10 if count < 10
-    backup_jobs.find(:all, :order => 'created_at DESC', :limit => count, :include => :backup_server, :offset => offset)
+    backup_jobs.all(:order => 'created_at DESC', :limit => count, :include => :backup_server, :offset => offset)
   end
 
   def to_s
     hostname
-  end
-
-  def possible_backup_servers
-    BackupServer.available_for(connect_to.blank? ? hostname : connect_to)
   end
 
   def backup_running?
@@ -169,7 +168,7 @@ class Server < ActiveRecord::Base
     offset = 0 if offset < 0
     count = backup_jobs.all.size - offset
     if (count > 0)
-      backup_jobs.find(:all, :order => 'created_at DESC', :offset => offset, :limit => count).each do | job |
+      backup_jobs.all(:order => 'created_at DESC', :offset => offset, :limit => count).each do | job |
         job.destroy
       end
     end

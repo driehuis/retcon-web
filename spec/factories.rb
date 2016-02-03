@@ -4,7 +4,6 @@ FactoryGirl.define do
     enabled true
     ssh_port 22
     interval_hours 24
-    keep_snapshots 30
     association :backup_server
     path '/'
   end

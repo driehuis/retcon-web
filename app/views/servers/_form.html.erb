@@ -1,6 +1,6 @@
-<% semantic_form_for(@server) do |f| %>
-  <% f.inputs do %>
-    <% f.inputs :name => "General", :class => 'separator' do %>
+<%= semantic_form_for(@server) do |f| %>
+  <%= f.inputs do %>
+    <%= f.inputs :name => "General", :class => 'separator' do %>
       <%= f.input :hostname %>
       <%= f.input :comment, :required => false, :hint => 'Leave comment blank. Add a comment to document exceptions or work in progress. Include a ticket number is possible.' %>
       <%= f.input :enabled, :required => false, :label => 'Backups enabled?', :hint => '&nbsp;&nbsp;Disabling backups makes Retcon completely ignore this server.<br>&nbsp;&nbsp;Only disable backups for short periods of planned work.' %>
@@ -9,13 +9,13 @@
       <%= f.input :ssh_port, :required => true, :hint => 'Probably port 22' %>
       <%= f.input :path, :required => true, :hint => 'Probably /', :label => 'Rsync start path' %>
     <% end %>
-    <% f.inputs :name => "Quirks", :class => 'separator' do %>
-      <% f.fields_for :quirk_details do |ad| %>
+    <%= f.inputs :name => "Quirks", :class => 'separator' do %>
+      <%= f.fields_for :quirk_details do |ad| %>
         <%= render 'quirk_detail_fields', :f => ad %>
       <% end %>
       <p><%= link_to_add_fields "Add Quirk", f, :quirk_details %></p>
     <% end %>
-    <% f.inputs :name => "Backup config", :class => 'separator' do %>
+    <%= f.inputs :name => "Backup config", :class => 'separator' do %>
       <%= f.input :interval_hours, :required => true %>
       <%= f.input :keep_snapshots, :required => true, :label => 'Keep this number of snapshots',
         :hint => 'Normally, Retcon uses this value as the maximum number of snapshots to keep. ' +
@@ -30,7 +30,7 @@
         'This is used only when a special agreement with the customer is in place.' %>
       <%= f.input :window_start, :required => false, :hint => 'Integer 0-23. Window starts at 0:00 when empty.' %>
       <%= f.input :window_stop, :required => false, :hint => 'Integer 0-23. Window ends at 23:59 when empty.' %>
-      <%= f.input :profiles, :collection => Profile.public_plus(@server.hostname).find(:all, :order => 'name ASC'), :as => :check_boxes, :required => false %><br/>
+      <%= f.input :profiles, :collection => Profile.public_plus(@server.hostname).all(:order => 'name ASC'), :as => :check_boxes, :required => false %><br/>
       <%= f.input :backup_server, :hint => "When moving to another backup server the backup data will currently not be moved!",
                                   :include_blank => (@server.backup_server.nil? ? true : false )%>
       <%= f.input :user, :hint => "Visible to this customer", :as => :select, :collection => Role.find_by_name('user').users, :include_blank => true %>

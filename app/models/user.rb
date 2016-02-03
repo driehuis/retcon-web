@@ -11,9 +11,8 @@ class User < ActiveRecord::Base
   def role_symbols
     roles.map {|r| r.name.to_sym}
   end
-  
+
   def has_role?(role)
     role_symbols.include? role
   end
 end
-

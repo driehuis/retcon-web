@@ -30,7 +30,7 @@ class UsersController < ApplicationController
   end
   
   def index
-    @users = User.accessible_by(current_ability).find(:all, :order => 'username', :include => [:backup_server])
+    @users = User.accessible_by(current_ability).all(:order => 'username', :include => [:backup_server])
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @users }
