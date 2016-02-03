@@ -1,5 +1,5 @@
 <%= page_entries_info @servers %>
-<%= paginate @servers %>
+<%= paginate @servers, :window => 20, :outer_window => 4 %>
 
 <table class="index sortable">
   <thead>
@@ -48,5 +48,5 @@
 </table>
 
 <p>
-<%= paginate @servers %>
+<%= paginate @servers, :window => 20, :outer_window => 4 %>
 </p>
