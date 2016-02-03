@@ -1,29 +1,25 @@
-# Filters added to this controller apply to all controllers in the application.
-# Likewise, all the methods added will be available for all controllers.
-
 class ApplicationController < ActionController::Base
-  helper :all # include all helpers, all the time
+  protect_from_forgery
+
   helper_method :yield_or_default
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
   helper_method :current_user
   helper_method :current_ability
-  
+  helper :all # include all helpers, all the time
+
   rescue_from CanCan::AccessDenied do |exception|
-     redirect_to :controller => 'dashboard', :action => 'forbidden'
+     redirect_to :controller => 'user_sessions', :action => 'new'
   end
-     
-  private  
-  def current_user_session  
+
+  private
+  def current_user_session
     return @current_user_session if defined?(@current_user_session)
     @current_user_session = UserSession.find
-  end  
+  end
 
-  def current_user  
+  def current_user
     @current_user = current_user_session && current_user_session.record
   end
-  
-  # Scrub sensitive parameters from your log
-  filter_parameter_logging :password
+
   # Yield the content for a given block. If the block yiels nothing, the optionally specified default text is shown.
   #
   #   yield_or_default(:user_status)
@@ -35,5 +31,5 @@ class ApplicationController < ActionController::Base
   def yield_or_default(message, default_message = "")
     message.nil? ? default_message : message
   end
-  
+
 end

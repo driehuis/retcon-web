@@ -1,4 +1,13 @@
 <% content_for :header do %>
   Log in
 <% end %>
-<%= render_cell :login, :login %>
+<section>
+<%= semantic_form_for @user_session do |form| %>
+  <%= form.error_messages %>
+  <%= form.inputs do %>
+    <%= form.input :username %>
+    <%= form.input :password %>
+  <% end %>
+   <button type='submit'>Log in!</button>
+<% end %>
+</section>

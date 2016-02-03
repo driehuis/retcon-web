@@ -2,7 +2,7 @@ class CreateCommands < ActiveRecord::Migration
   def self.up
     create_table :commands do |t|
       t.integer :backup_job_id
-      t.sting :command
+      t.string :command
       t.integer :exitstatus
       t.text :output
 
