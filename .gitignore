@@ -12,3 +12,5 @@ public/stylesheets/all.css
 *.swp
 *.swo
 .rvmrc
+.bundle
+.byebug_history

@@ -1,6 +1,6 @@
 class BackupJobStats < ActiveRecord::Base
   belongs_to :backup_job
-  after_initialize :do_after_initialize
+  #after_initialize :do_after_initialize
 
   def parse_all
     backup_job.commands.each do |cmd|

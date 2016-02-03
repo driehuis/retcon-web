@@ -31,11 +31,11 @@ class BackupServer < ActiveRecord::Base
   end
 
   def latest_problems
-    problems.find(:all, :order => 'created_at DESC', :limit=>10, :include => [:server])
+    problems.all(:order => 'created_at DESC', :limit=>10, :include => [:server])
   end
 
   def latest_jobs
-    backup_jobs.find(:all, :order => 'updated_at DESC', :limit => 50, :include => [:server])
+    backup_jobs.all( :order => 'updated_at DESC', :limit => 50, :include => [:server])
   end
 
   def to_s
