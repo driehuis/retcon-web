@@ -21,8 +21,8 @@ describe Quirk do
   end
 
   it "should generate a valid QuirkDetail when associated with a Server" do
-    q = Factory.build(:quirk)
-    s = Factory.build(:server)
+    q = FactoryGirl.build(:quirk)
+    s = FactoryGirl.build(:server)
     qd = QuirkDetail.new(:quirk_id=>q.id, :server_id=>s.id, :comment => '#12345')
     q.valid?.should be true
     s.valid?.should be true
@@ -30,8 +30,8 @@ describe Quirk do
   end
 
   it "should fail to generate a QuirkDetail with a blank comment" do
-    q = Factory.build(:quirk)
-    s = Factory.build(:server)
+    q = FactoryGirl.build(:quirk)
+    s = FactoryGirl.build(:server)
     qd = QuirkDetail.new(:quirk_id=>q.id, :server_id=>s.id, :comment => '')
     q.valid?.should be true
     s.valid?.should be true
