@@ -29,7 +29,7 @@ class CommandsController < ApplicationController
     @command = Command.accessible_by(current_ability).find(params[:id])
 
     respond_to do |format|
-      if @command.update_attributes(params[:command])
+      if @command.update_attributes(params[:command].except(:updated_at))
         format.xml  { head :ok }
       else
         format.xml  { render :xml => @command.errors, :status => :unprocessable_entity }
