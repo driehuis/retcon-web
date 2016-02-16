@@ -95,9 +95,11 @@ class ServersController < ApplicationController
 
   JOB_STAT_SIZE_ITEMS = [ :current_size, :xfr_size, :list_size, :net_recv, :net_sent ]
   JOB_STAT_COUNT_ITEMS = [ :inodes, :n_reg, :n_dir, :n_lnk, :n_spc, :n_xfr ]
+  JOB_STAT_TIMING_ITEMS = [ :time_rsync, :time_other, :time_snap ]
   JOB_STAT_ITEMS = {
     'size' => JOB_STAT_SIZE_ITEMS,
     'count' => JOB_STAT_COUNT_ITEMS,
+    'timing' => JOB_STAT_TIMING_ITEMS,
   }
   def job_stats
     items = JOB_STAT_ITEMS[params[:subset]]

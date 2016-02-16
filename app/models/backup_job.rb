@@ -23,6 +23,9 @@ class BackupJob < ActiveRecord::Base
   def finish
     self.finished = true
     save
+    bjs = BackupJobStats.new(:backup_job => self)
+    bjs.process_stats
+    bjs.save
   end
 
   def run
@@ -146,8 +149,7 @@ class BackupJob < ActiveRecord::Base
       run_command("/sbin/zfs list #{self.fs}", "fs_exists_confirm")
     else
       self.status = 'Unable to create filesystem'
-      self.finished = true
-      save
+      finish
     end
   end
 
@@ -156,8 +158,7 @@ class BackupJob < ActiveRecord::Base
       start_rsyncs
     else
       self.status = 'Unable to create filesystem'
-      self.finished = true
-      save
+      finish
     end
   end
 
