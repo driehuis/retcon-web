@@ -1,12 +1,21 @@
 class BackupJobStats < ActiveRecord::Base
   belongs_to :backup_job
-  #after_initialize :do_after_initialize
+
+  def process_stats
+    parse_all
+    created_at = backup_job.created_at
+  end
 
   def parse_all
     backup_job.commands.each do |cmd|
-      if cmd.label == 'main_rsync'
+      if %w(main_rsync split_rsync).include? cmd.label
         output = cmd.output
         parse(output) if output
+        bump :time_rsync, command_time_diff(cmd)
+      elsif %w(snapshot remove_snapshot).include? cmd.label
+        bump :time_snap, command_time_diff(cmd)
+      else
+        bump :time_other, command_time_diff(cmd)
       end
     end
   end
@@ -17,7 +26,6 @@ class BackupJobStats < ActiveRecord::Base
     buf.split(/\n/).each do |line|
       # Number of files: 77,503 (reg: 63,162, dir: 10,528, link: 3,809, special: 4)
       if /Number of files: (\d+)/.match(line)
-        debugger
         bump :inodes, $1
         bump :n_reg, $1 if /reg: (\d+)/ =~ line
         bump :n_dir, $1 if /dir: (\d+)/ =~ line
@@ -76,5 +84,10 @@ class BackupJobStats < ActiveRecord::Base
     else
       self.attributes = { key => oldvalue + value }
     end
+  end
+
+  def command_time_diff(c)
+    return 0 unless c.created_at and c.updated_at
+    (c.updated_at - c.created_at).round
   end
 end

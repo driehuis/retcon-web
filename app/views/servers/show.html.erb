@@ -223,4 +223,5 @@ servers are applied through profiles.
   <h3>Rsync statistics</h3>
   <%= render :partial => 'servers/stats_linechart', :locals => {:server_id => @server.id, :subset => 'size'} %>
   <%= render :partial => 'servers/stats_linechart', :locals => {:server_id => @server.id, :subset => 'count'} %>
+  <%= render :partial => 'servers/stats_linechart', :locals => {:server_id => @server.id, :subset => 'timing'} %>
 </section>

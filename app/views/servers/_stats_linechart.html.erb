@@ -4,6 +4,9 @@
 <script type='text/javascript'>
   d3.json('/stats/server/<%= subset %>/<%= server_id %>.json', function(data) {
   nv.addGraph(function() {
+    var formatCount = d3.format(",.0f"),
+      formatTime = d3.time.format("%H:%M:%S"),
+      formatSeconds = function(d) { return formatTime(new Date(2012, 0, 1, (d / 3600) % 60, (d / 60) % 60, d % 60)); };
     var chart = nv.models.lineChart()
                   .x(function(d) { return d[0] })
                   .y(function(d) { return d[1] })
@@ -17,8 +20,13 @@
             return d3.time.format('%x')(new Date(d))
           });
 
+<% if subset == 'timing' %>
+    chart.yAxis
+        .tickFormat(formatSeconds);
+<% else %>
     chart.yAxis
         .tickFormat(d3.format(',.0'));
+<% end %>
     chart.forceY([0, 10]);
     chart.margin({left: 100});
 
