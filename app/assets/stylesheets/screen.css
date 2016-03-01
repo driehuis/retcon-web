@@ -142,7 +142,11 @@ header.secondary form input:focus {
 
 header.secondary a {
   color: #fff;
-  font-size: .7em;
+  font-size: 18px;
+}
+
+header.secondary .miniexplanation, header.secondary .miniexplanation a {
+  font-size: 14px;
 }
 
 #notice {

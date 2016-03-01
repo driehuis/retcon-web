@@ -1,13 +1,19 @@
 class ServersController < ApplicationController
   load_and_authorize_resource
 
+VALID_SORT = {
+  'name' => 'servers.hostname',
+  'usage' => 'servers.usage DESC'
+}
   # GET /servers
   # GET /servers.xml
   def index
    #@search = Server.accessible_by(current_ability).search(params[:search]).relation
    #@servers = @search.scoped(:order => 'servers.hostname', :include => [:backup_server]).paginate(:page => params[:page], :per_page => 31)
+   sortorder = VALID_SORT[params[:sort]] || VALID_SORT.first[1]
+   puts "Sort order: #{sortorder}"
    @search = Server.accessible_by(current_ability).search(params[:search])
-   @servers = @search.result.order('servers.hostname').includes([:backup_server]).page(params[:page]).per(31)
+   @servers = @search.result.order(sortorder).includes([:backup_server]).page(params[:page]).per(31)
 
    if request.xhr?
      render :partial => 'listing'

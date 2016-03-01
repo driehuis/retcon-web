@@ -2,6 +2,10 @@
    Servers
 <% end %>
 <% content_for :search do %>
+  <% order = params[:sort] && params[:sort] == 'usage' ? 'name' : 'usage' %>
+  <span class="miniexplanation">
+  <a href="?sort=<%= order %>">Sort by <%= order %></a>
+    | Select</span>
   <%= form_for @search, :url => servers_path, :as => 'search' do |f| %>
     <%= f.text_field :hostname_cont, :autofocus => 'autofocus' %>
   <% end %>
