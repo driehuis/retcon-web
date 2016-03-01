@@ -40,7 +40,7 @@
   </tr>
   </thead>
   <tbody>
-<% @backup_server.latest_jobs.select{|j| can? :read, j}.each do | job | %>
+<% @backup_jobs.each do | job | %>
   <tr>
 	<td><%= link_to job.id, job %></td>
     <td><%=link_to h(job.server ? job.server.hostname : "no server"), job.server %></td>
@@ -57,6 +57,7 @@
   </tbody>
 <% end %>
 </table>
+<%= paginate @backup_jobs, :window => 20, :outer_window => 4 %>
 </section>
 <% end %>
 

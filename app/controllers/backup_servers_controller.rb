@@ -1,6 +1,6 @@
 class BackupServersController < ApplicationController
   load_and_authorize_resource
-  
+
   # GET /backup_servers
   # GET /backup_servers.xml
   def index
@@ -16,6 +16,7 @@ class BackupServersController < ApplicationController
   # GET /backup_servers/1.xml
   def show
     @backup_server = BackupServer.accessible_by(current_ability).find(params[:id])
+    @backup_jobs = @backup_server.backup_jobs.order('updated_at DESC').scoped(:include => [:server]).page(params[:page]).per(30)
 
     respond_to do |format|
       format.html # show.html.erb
