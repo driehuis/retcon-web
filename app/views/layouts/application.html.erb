@@ -12,7 +12,7 @@
   <%#= stylesheet_link_tag :all %>
   <%#= javascript_include_tag :defaults %>
     <%= stylesheet_link_tag 'screen', 'formtastic', 'formtastic_changes', 'pagination' %>
-    <%= javascript_include_tag "top_up-min.js?images_path=/images/top_up/&dummy_var=", "jquery.quicksearch",  "jquery.tablesorter.min", "application" %>
+    <%= javascript_include_tag "jquery", "jquery.quicksearch",  "jquery.tablesorter.min", "application" %>
 		<%= yield_or_default yield(:extra_head_makeup) %>
   <%= csrf_meta_tag %>
 </head>

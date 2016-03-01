@@ -427,25 +427,25 @@ section h3 {
      -moz-border-radius: 0 0 .8em .8em;
 }
 
-input, textarea {  
-    padding: 4px;  
-    border: solid 1px #E5E5E5;  
-    outline: 0;  
-    background: #EEEEEE url('bg_form.png') left top repeat-x;  
-    background: -webkit-gradient(linear, left top, left 25, from(#EEEEEE), color-stop(4%, #DDDDDD), to(#EEEEEE));  
-    background: -moz-linear-gradient(top, #EEEEEE, #DDDDDD 1px, #EEEEEE 25px);  
-    }  
-  
-textarea {  
-    width: 400px;  
-    max-width: 400px;  
-    height: 150px;  
-    line-height: 150%;  
-    }  
-  
-input:hover, textarea:hover,  
-input:focus, textarea:focus {  
-    border-color: #C9C9C9;  
+input, textarea {
+    padding: 4px;
+    border: solid 1px #E5E5E5;
+    outline: 0;
+    background: #EEEEEE url('bg_form.png') left top repeat-x;
+    background: -webkit-gradient(linear, left top, left 25, from(#EEEEEE), color-stop(4%, #DDDDDD), to(#EEEEEE));
+    background: -moz-linear-gradient(top, #EEEEEE, #DDDDDD 1px, #EEEEEE 25px);
+    }
+
+textarea {
+    width: 400px;
+    max-width: 400px;
+    height: 150px;
+    line-height: 150%;
+    }
+
+input:hover, textarea:hover,
+input:focus, textarea:focus {
+    border-color: #C9C9C9;
     }
 
 input[type=hidden] {
@@ -493,7 +493,7 @@ button:hover {
     text-align: center;
     text-decoration: none;
     padding: 0px;
-    //text-shadow: 0 1px 1px rgba(0,0,0,.3);
+    /*text-shadow: 0 1px 1px rgba(0,0,0,.3);*/
     -webkit-border-radius: .5em;
     -moz-border-radius: .5em;
     border-radius: .3em;
