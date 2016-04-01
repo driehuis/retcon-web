@@ -12,6 +12,7 @@ class Ability
         backup_job.server.user_id == user.id
       end
       can :read, Profile
+      can :read, Quirk
       can :read, Include
       can :read, Split
       can :read, Exclude
