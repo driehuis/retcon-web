@@ -13,13 +13,13 @@ $(document).ready(function() {
     get_ajax_content(this)
   });
 
-  $(".toggle").live('click', function(event){
+  $('body').on('click', '.toggle', function(event){
     //alert('.toggle ' + event.target.nodeName);
     if (event.target.nodeName != 'P') { // ignore clicks in paragraphs to allow copy&paste
       $(this).find('.togglable').toggle();
     }
   });
-  $(".toggle_settings").live('click', function(){
+  $('body').on('click', '.toggle_settings', function(){
     $('.togglable').toggle();
   });
 });
