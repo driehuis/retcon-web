@@ -9,7 +9,16 @@ $(document).ready(function() {
   if (s && s.val() && s.val().length > 0) {
     get_ajax_content(s)
   }
-  $("#search_hostname_cont").bind("keyup", function() {
+  $("#search_hostname_cont").bind("change keyup input", function() {
+    get_ajax_content(this)
+  });
+
+  $('input#server_search').quicksearch('#server_list ol li', {delay: 100});
+  var s2 = $("#server_search");
+  if (s2 && s2.val() && s2.val().length > 0) {
+    get_ajax_content(s2)
+  }
+  $("#server_search").bind("change keyup input", function() {
     get_ajax_content(this)
   });
 
