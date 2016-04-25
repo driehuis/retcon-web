@@ -2,24 +2,17 @@
 // This file is automatically included by javascript_include_tag :defaults
 var outstanding = 0;
 $(document).ready(function() {
-  $('input#search_hostname_cont').quicksearch('#server_list ol li', {delay: 100});
   $(".sortable").tablesorter();
 
-  var s = $("#search_hostname_cont");
-  if (s && s.val() && s.val().length > 0) {
-    get_ajax_content(s)
-  }
-  $("#search_hostname_cont").bind("change keyup input", function() {
-    get_ajax_content(this)
-  });
+  $('input#search_hostname_cont, input#server_search, input#search_name_cont').each(function(){
+    $(this).quicksearch('#server_list ol li', {delay: 100});
 
-  $('input#server_search').quicksearch('#server_list ol li', {delay: 100});
-  var s2 = $("#server_search");
-  if (s2 && s2.val() && s2.val().length > 0) {
-    get_ajax_content(s2)
-  }
-  $("#server_search").bind("change keyup input", function() {
-    get_ajax_content(this)
+    if ($(this).val() && $(this).val().length > 0) {
+      get_ajax_content(this)
+    }
+    $(this).bind("change keyup input", function() {
+      get_ajax_content(this)
+    });
   });
 
   $('body').on('click', '.toggle', function(event){
