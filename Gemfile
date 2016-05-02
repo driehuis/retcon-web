@@ -34,3 +34,5 @@ end
 #gem 'prototype-rails'
 gem 'dynamic_form'  # Rails 2 compatibility
 gem 'quiet_assets'
+# Allow database dump and restore to YAML format.
+gem 'yaml_db'
