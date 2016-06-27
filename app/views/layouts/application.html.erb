@@ -10,7 +10,7 @@
 
 	<title>Retcon: <%= yield_or_default yield(:header) %> </title>
     <%= stylesheet_link_tag 'application' %>
-    <%= javascript_include_tag "jquery", "jquery.quicksearch",  "jquery.tablesorter.min", "jquery_ujs", "application" %>
+    <%= javascript_include_tag 'application' %>
 		<%= yield_or_default yield(:extra_head_makeup) %>
   <%= csrf_meta_tag %>
 </head>
