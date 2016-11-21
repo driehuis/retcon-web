@@ -28,7 +28,7 @@ class BackupJobsController < ApplicationController
 
     respond_to do |format|
       if @backup_job.save
-        @backup_job.run if @backup_job.start_now
+        @backup_job.run if @backup_job.start_now.to_bool
         flash[:notice] = 'BackupJob was successfully created.'
         format.html { redirect_to(@backup_job.server) }
         format.xml  { render :xml => @backup_job, :status => :created, :location => @backup_job }
