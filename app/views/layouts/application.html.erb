@@ -9,10 +9,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 	<title>Retcon: <%= yield_or_default yield(:header) %> </title>
-  <%#= stylesheet_link_tag :all %>
-  <%#= javascript_include_tag :defaults %>
-    <%= stylesheet_link_tag 'screen', 'formtastic', 'formtastic_changes', 'pagination' %>
-    <%= javascript_include_tag "jquery", "jquery.quicksearch",  "jquery.tablesorter.min", "application" %>
+    <%= stylesheet_link_tag 'application' %>
+    <%= javascript_include_tag 'application' %>
 		<%= yield_or_default yield(:extra_head_makeup) %>
   <%= csrf_meta_tag %>
 </head>

@@ -152,6 +152,9 @@ GEM
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    yaml_db (0.3.0)
+      rails (>= 3.0, < 4.3)
+      rake (>= 0.8.7)
 
 PLATFORMS
   ruby
@@ -178,6 +181,7 @@ DEPENDENCIES
   sqlite3
   test-unit (= 1.2.3)
   uglifier (>= 1.0.3)
+  yaml_db
 
 BUNDLED WITH
    1.10.6

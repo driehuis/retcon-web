@@ -1,25 +1,30 @@
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
+//= require jquery
+//= require jquery_ujs
+//= require jquery.quicksearch
+//= require jquery.tablesorter.min
+
 var outstanding = 0;
 $(document).ready(function() {
-  $('input#search_hostname_cont').quicksearch('#server_list ol li', {delay: 100});
   $(".sortable").tablesorter();
 
-  var s = $("#search_hostname_cont");
-  if (s && s.val() && s.val().length > 0) {
-    get_ajax_content(s)
-  }
-  $("#search_hostname_cont").bind("keyup", function() {
-    get_ajax_content(this)
+  $('input#search_hostname_cont, input#server_search, input#search_name_cont').each(function(){
+    $(this).quicksearch('#server_list ol li', {delay: 100});
+
+    if ($(this).val() && $(this).val().length > 0) {
+      get_ajax_content(this)
+    }
+    $(this).bind("change keyup input", function() {
+      get_ajax_content(this)
+    });
   });
 
-  $(".toggle").live('click', function(event){
+  $('body').on('click', '.toggle', function(event){
     //alert('.toggle ' + event.target.nodeName);
     if (event.target.nodeName != 'P') { // ignore clicks in paragraphs to allow copy&paste
       $(this).find('.togglable').toggle();
     }
   });
-  $(".toggle_settings").live('click', function(){
+  $('body').on('click', '.toggle_settings', function(){
     $('.togglable').toggle();
   });
 });

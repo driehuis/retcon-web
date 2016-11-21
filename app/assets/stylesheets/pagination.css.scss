@@ -2,6 +2,9 @@
   margin: 0;
   padding: 0;
 
+  span.current {
+    padding: 0 6px;
+  }
   span {
     $pagination-border-radius: 8px;
     $pagination-link-color: #004353;
@@ -9,7 +12,6 @@
     $hilite-color: #007883;
 
     float: left;
-    padding: 0 6px;
     text-align: center;
     border: $border-color 1px solid;
     border-right: none;
@@ -44,6 +46,8 @@
       &:active  { color: $pagination-link-color; }
       &:visited { color: $pagination-link-color; }
       font-size: 11px;
+      display: block;
+      padding: 0 6px;
     }
   }
 }

@@ -35,7 +35,7 @@ class BackupServer < ActiveRecord::Base
   end
 
   def latest_jobs
-    backup_jobs.all( :order => 'updated_at DESC', :limit => 50, :include => [:server])
+    backup_jobs.where("NOT status = 'queued'", :include => [:server]).order('updated_at DESC')
   end
 
   def to_s
