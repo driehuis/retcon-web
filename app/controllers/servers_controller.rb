@@ -22,6 +22,7 @@ VALID_SORT = {
         format.html # index.html.erb
         format.xml  { render :xml => @servers.to_xml( :include => [:backup_jobs]) }
         format.json { render :json => @servers.to_json(:include => [:backup_jobs])}
+        format.csv { render :text => Server.to_csv(@servers) }
       end
     end
   end
