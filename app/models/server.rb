@@ -165,7 +165,7 @@ class Server < ActiveRecord::Base
   end
 
   def cleanup_old_jobs
-    offset = (keep_snapshots * 1.5).to_i + 4
+    offset = (keep_snapshots * 6).to_i + 4
     offset = 0 if offset < 0
     count = backup_jobs.all.size - offset
     if (count > 0)
