@@ -282,15 +282,18 @@ describe Server do
   # example, because its rsync FAILed), so that we improve our chances to
   # retain some extra log information about failed jobs.
   # With keep_snapshots => 4, we should keep 6+4=10 backup jobs.
+  # Update 20170720: We want to retain logs longer for statistics 
+  # purposes. We keep 600% now, so the math goes up a bit:
+  # With keep_snapshots => 4, we should keep 24+4=28 backup jobs.
   it "should cleanup old backupjobs" do
     server = FactoryGirl.create(:server, :keep_snapshots => 4)
-    11.times do
+    29.times do
       FactoryGirl.create(:backup_job, :backup_server => server.backup_server, :server => server, :status => 'OK')
     end
     job = server.backup_jobs.last
-    server.backup_jobs.size.should == 11
+    server.backup_jobs.size.should == 29
     server.cleanup_old_jobs
-    server.backup_jobs.size.should == 10
+    server.backup_jobs.size.should == 28
   end
 
   it "should have a method that gets or creates an exclusive profile" do
