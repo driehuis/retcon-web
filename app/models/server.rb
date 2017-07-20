@@ -1,3 +1,4 @@
+require 'csv'
 class Server < ActiveRecord::Base
   validates_presence_of :hostname, :interval_hours, :keep_snapshots, :ssh_port, :backup_server, :path
   validates_uniqueness_of :hostname
@@ -164,7 +165,7 @@ class Server < ActiveRecord::Base
   end
 
   def cleanup_old_jobs
-    offset = (keep_snapshots * 1.5).to_i + 4
+    offset = (keep_snapshots * 6).to_i + 4
     offset = 0 if offset < 0
     count = backup_jobs.all.size - offset
     if (count > 0)
@@ -179,4 +180,15 @@ class Server < ActiveRecord::Base
     self.connect_to.gsub!(/\s/,'') unless connect_to.blank?
     self.path.gsub!(/\s/,'')
   end
+
+  def self.to_csv(selection)
+    CSV.generate(:col_sep => ';') do |csv|
+      column_names = Server::column_names
+      csv << column_names
+      selection.each do |server|
+        csv << server.attributes.values_at(*column_names)
+      end
+    end
+  end
+
 end
