@@ -19,7 +19,7 @@ VALID_SORT = {
      render :partial => 'listing'
    else
       respond_to do |format|
-        format.html { @servers = @hosts.page(params[:page]).per(30) }
+        format.html { @servers = @servers.page(params[:page]).per(30) }
         format.xml  { render :xml => @servers.to_xml( :include => [:backup_jobs]) }
         format.json { render :json => @servers.to_json(:include => [:backup_jobs])}
         format.csv { render :text => Server.to_csv(@servers) }
