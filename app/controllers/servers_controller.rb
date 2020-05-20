@@ -13,13 +13,13 @@ VALID_SORT = {
    sortorder = VALID_SORT[params[:sort]] || VALID_SORT.first[1]
    puts "Sort order: #{sortorder}"
    @search = Server.accessible_by(current_ability).search(params[:search])
-   @servers = @search.result.order(sortorder).includes([:backup_server]).page(params[:page]).per(31)
+   @servers = @search.result.order(sortorder).includes([:backup_server])
 
    if request.xhr?
      render :partial => 'listing'
    else
       respond_to do |format|
-        format.html # index.html.erb
+        format.html { @servers = @servers.page(params[:page]).per(30) }
         format.xml  { render :xml => @servers.to_xml( :include => [:backup_jobs]) }
         format.json { render :json => @servers.to_json(:include => [:backup_jobs])}
         format.csv { render :text => Server.to_csv(@servers) }
