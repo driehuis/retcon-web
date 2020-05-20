@@ -47,7 +47,7 @@ class BackupJob < ActiveRecord::Base
   end
 
   def ssh_command
-    "ssh -c arcfour,aes128-ctr -p #{self.server.ssh_port}"
+    "ssh -p #{self.server.ssh_port}"
   end
 
   def main_rsync
